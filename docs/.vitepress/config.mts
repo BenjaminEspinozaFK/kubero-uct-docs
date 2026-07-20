@@ -4,6 +4,7 @@ export default defineConfig({
   title: 'Kubero UCT',
   description: 'Documentación de la plataforma CI/CD educativa con Kubero',
   lang: 'es',
+  base: '/kubero-uct-docs/',
 
   themeConfig: {
     logo: '/kubero-logo.svg',

@@ -12,27 +12,20 @@ export default defineConfig({
 
     nav: [
       { text: 'Inicio', link: '/' },
-      { text: 'Guía', link: '/guia' },
+      { text: 'Guía', link: '/introduccion' },
     ],
 
     sidebar: [
       {
         text: 'Plataforma Kubero UCT',
         items: [
-          { text: 'Conceptos Clave', link: '/guia#conceptos-clave' },
-          { text: '¿Cómo funciona?', link: '/guia#¿como-funciona' },
-          { text: 'Roles en la Plataforma', link: '/guia#roles-en-la-plataforma' },
-          { text: 'Acceder a Kubero', link: '/guia#acceder-a-kubero' },
-          { text: 'Preparar tu Repositorio', link: '/guia#preparar-tu-repositorio-en-github' },
-          { text: 'Crear un Pipeline', link: '/guia#crear-un-pipeline' },
-          { text: 'Crear una App', link: '/guia#crear-una-app-y-hacer-tu-primer-despliegue' },
-          { text: 'Autodeploy', link: '/guia#autodeploy-redespliegue-automatico' },
-          { text: 'Base de Datos (PostgreSQL)', link: '/guia#agregar-una-base-de-datos-addon-postgresql' },
-          { text: 'Variables de Entorno', link: '/guia#variables-de-entorno' },
-          { text: 'Routing Frontend + Backend', link: '/guia#routing-entre-servicios-frontend-backend' },
-          { text: 'Monitorear tu Despliegue', link: '/guia#monitorear-tu-despliegue' },
-          { text: 'Gestión de Usuarios', link: '/guia#gestion-de-usuarios-solo-profesores' },
-          { text: 'Limitaciones Conocidas', link: '/guia#limitaciones-conocidas' },
+          { text: 'Introducción', link: '/introduccion' },
+          { text: 'Primeros Pasos', link: '/primeros-pasos' },
+          { text: 'Crear Pipeline y App', link: '/despliegue' },
+          { text: 'Autodeploy', link: '/autodeploy' },
+          { text: 'Base de Datos y Variables', link: '/base-de-datos' },
+          { text: 'Routing y Monitoreo', link: '/routing-y-monitoreo' },
+          { text: 'Gestión de Usuarios', link: '/profesores' },
         ]
       }
     ],

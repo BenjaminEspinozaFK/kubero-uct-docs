@@ -4,45 +4,51 @@
 
 En aplicaciones donde el frontend (React, Vue, etc.) y el backend están separados, el frontend necesita saber cómo llegar al backend para hacer llamadas a la API.
 
-### El problema
+### La solución en Kubero UCT: dominios separados
 
-El frontend en producción es solo archivos estáticos servidos por nginx. Cuando el usuario hace una acción que requiere datos del servidor (ej: iniciar sesión), el navegador hace una petición a `/api/login`. Pero nginx no sabe a dónde enviar esa petición.
+La forma correcta en esta plataforma es darle a cada servicio su **propio dominio** en Kubero. Así el frontend llama directamente al dominio público del backend — sin configuraciones especiales de nginx ni acceso al cluster.
 
-### La solución: configurar nginx como proxy inverso
+**Ejemplo:**
+| App | Dominio en Kubero |
+|---|---|
+| Frontend | `mi-proyecto.inf.uct.cl` |
+| Backend | `api-mi-proyecto.inf.uct.cl` |
 
-La forma correcta es configurar el `nginx.conf` del frontend para que redirija automáticamente todas las peticiones a `/api/` hacia el servicio interno del backend.
+El frontend hace sus llamadas API directamente a `https://api-mi-proyecto.inf.uct.cl` desde el código.
 
-El servicio interno del backend en Kubero tiene el nombre: **`[nombre-app]-kuberoapp`**
+### Paso 1 — Crear dos apps en Kubero con dominios distintos
 
-Por ejemplo, si tu app backend se llama `server`, el servicio interno es `server-kuberoapp` y escucha en el puerto `80`.
+Al crear las apps dentro de tu pipeline, asigna un dominio diferente a cada una:
 
-### Ejemplo de configuración nginx
+- App `frontend` → Domain: `mi-proyecto.inf.uct.cl`
+- App `backend` → Domain: `api-mi-proyecto.inf.uct.cl`
 
-En el archivo `nginx.conf` (o `nginx.prod.conf`) del frontend, agrega el bloque `location /api/`:
+Ambas apps quedan accesibles con HTTPS automático desde sus respectivos dominios.
 
-```nginx
-server {
-    listen 80;
-    root /usr/share/nginx/html;
-    index index.html;
+### Paso 2 — Configurar la URL del backend en el frontend
 
-    # Archivos estáticos del frontend
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
+En tu código del frontend, usa una variable de entorno para definir la URL base del backend:
 
-    # Redirigir llamadas API al backend interno
-    location /api/ {
-        proxy_pass http://server-kuberoapp:80/api/;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
+```env
+VITE_API_URL=https://api-mi-proyecto.inf.uct.cl
 ```
 
-> **Nota:** El nombre `server-kuberoapp` en la línea `proxy_pass` debe coincidir con el nombre de tu app backend en Kubero. Si tu app se llama `api`, el servicio es `api-kuberoapp`.
+Agrega esta variable en Kubero dentro de la app `frontend` (sección **ENVIRONMENT VARIABLES**).
+
+En el código del frontend, úsala así (ejemplo con Vite + React):
+
+```javascript
+const API_URL = import.meta.env.VITE_API_URL
+
+// Ejemplo de llamada
+const response = await fetch(`${API_URL}/users/login`, {
+  method: 'POST',
+  body: JSON.stringify({ email, password })
+})
+```
+
+> **¿Por qué no usar nginx como proxy (`/api/`)?**
+> Hacer que `/api/` redirija al backend en el mismo dominio requiere modificar el Ingress de Kubernetes, lo cual no se puede hacer desde la UI de Kubero. La solución de dominios separados funciona completamente desde la interfaz sin tocar el cluster.
 
 ---
 

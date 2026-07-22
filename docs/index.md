@@ -11,7 +11,7 @@ hero:
   actions:
     - theme: brand
       text: Ver la Guía
-      link: /guia
+      link: /introduccion
     - theme: alt
       text: Acceder a Kubero
       link: https://kubero.inf.uct.cl

@@ -94,6 +94,7 @@ Estas son limitaciones de la configuración actual de Kubero en la UCT que es im
 | Limitación | Descripción |
 |---|---|
 | **No hay build interno** | Kubero en la UCT no construye imágenes internamente. Siempre debes usar la estrategia "Container Image" con imágenes ya construidas en GitHub Actions y subidas a ghcr.io |
-| **Dominio obligatorio** | Kubero requiere un dominio para todas las apps. Si no quieres exponer un servicio, igual debes ingresar un dominio (pero el servicio no tendrá ingress público si es un addon) |
+| **Dominio opcional para servicios internos** | Si no quieres que una app sea pública, deja el campo Domain vacío — no se creará ingress y el servicio solo estará disponible dentro del cluster. Esto es útil para bases de datos con imagen custom u otros servicios internos (ver "App Interna sin Exposición Pública" en Base de Datos) |
 | **Health checks en PostgreSQL** | Kubero activa health checks HTTP para todas las apps por defecto, lo que falla en servicios que no hablan HTTP (como PostgreSQL). Si el addon de postgres crashea, desactiva los health checks en la sección **HEALTH CHECKS** de la app |
 | **Routing multi-servicio** | Si el frontend y el backend comparten el mismo dominio, el nginx del frontend debe estar configurado para hacer `proxy_pass` al servicio interno del backend. Esto debe hacerse en el `nginx.conf` de la imagen del frontend |
+| **Addons fijos** | Los addons predefinidos (PostgreSQL, Redis, etc.) usan imágenes estándar. Si necesitas una imagen custom (ej: Apache AGE, PostGIS), debes crear una **app interna sin dominio público** en vez de usar el addon — ver sección "App Interna sin Exposición Pública" en Base de Datos |

@@ -23,7 +23,7 @@ Si tu app necesita una base de datos, Kubero puede crearla como un **Addon**. Es
    | **Additional Username** | Usuario adicional para tu app | `mi_usuario` |
    | **Additional User Password** | Contraseña de ese usuario | `mi-password-seguro` |
    | **Database Name** | Nombre de la base de datos | `mi_base_de_datos` |
-   | **Storage Class** | Tipo de almacenamiento en el cluster | `csi-cephfs-sc` |
+   | **Storage Class** | Tipo de almacenamiento en el cluster | Deja el valor por defecto que aparece en el formulario |
 
    > **Importante:** En cada campo escribe **solo el valor**, no el nombre de la variable.
    > - ❌ Incorrecto: `POSTGRES_PASSWORD=mi-password-seguro`
@@ -48,6 +48,90 @@ postgres://mi_usuario:mi-password@server-postgres:5432/mi_base_de_datos
 ```
 
 > La base de datos creada como addon nunca tiene una URL pública. Solo tu backend puede acceder a ella usando el nombre de servicio interno.
+
+---
+
+## App Interna sin Exposición Pública (Imagen Custom)
+
+Kubero permite desplegar **cualquier imagen Docker** como una app interna — sin dominio público y sin que sea accesible desde internet. Esto es útil cuando necesitas una base de datos con imagen personalizada u otro servicio interno que el addon estándar no cubre.
+
+### ¿Cuándo usar esto?
+
+| Caso | Ejemplo |
+|---|---|
+| Base de datos con extensiones especiales | Apache AGE (Postgres para grafos), PostGIS, TimescaleDB |
+| Imagen de Postgres propia | Tu propio `ghcr.io/usuario/mi-postgres:latest` |
+| Servicio interno (Redis, RabbitMQ, etc.) | No expuesto a internet, solo para otros pods |
+| Cualquier contenedor que no habla HTTP | Servicios de mensajería, caches, BDs no relacionales |
+
+### Cómo crear una app interna
+
+Al crear la app en Kubero, completa los campos así:
+
+| Campo | Qué hacer |
+|---|---|
+| **Domain** | **Déjalo vacío** — sin dominio no se crea ingress público |
+| **Container Image** | URL de tu imagen (`apache/age`, `redis`, etc.) |
+| **Tag** | Versión de la imagen (`latest`, `16`, etc.) |
+| **Container Port** | Puerto que expone el contenedor (`5432` para Postgres, `6379` para Redis) |
+| **Web Replicas** | `1` normalmente |
+
+> Dejar el campo **Domain vacío** es lo que impide que la app quede expuesta a internet. Sin dominio, Kubero no crea una regla de ingress funcional.
+
+### Desactivar Health Checks
+
+Los contenedores que no son servidores HTTP (como Postgres o Redis) fallarán los health checks que Kubero activa por defecto. Debes desactivarlos:
+
+1. En la pantalla de edición de la app, busca la sección **"HEALTH CHECKS"**
+2. Desactiva las opciones de liveness y readiness probe
+
+Si no los desactivas, el pod entrará en `CrashLoopBackOff` porque Kubero intentará hacer peticiones HTTP al puerto del contenedor y fallará.
+
+### Cómo conectarse desde otra app
+
+Kubero crea un servicio interno de Kubernetes con el nombre **`[nombre-de-tu-app]-kuberoapp`**.
+
+**Ejemplo:** si tu app se llama `mi-db`, el hostname interno es `mi-db-kuberoapp`.
+
+Desde tu backend, la conexión sería:
+
+```env
+# Para Postgres (app interna llamada "mi-db")
+DATABASE_URL=postgres://usuario:password@mi-db-kuberoapp:5432/mi_base_de_datos
+
+# Para Redis (app interna llamada "mi-cache")
+REDIS_URL=redis://mi-cache-kuberoapp:6379
+```
+
+Agrega esa variable de entorno en la app de tu **backend** dentro de Kubero (sección ENVIRONMENT VARIABLES).
+
+### Ejemplo completo: Apache AGE (Postgres para grafos)
+
+[Apache AGE](https://age.apache.org/) es una imagen de Postgres con soporte para grafos (openCypher). No está disponible como addon, pero puedes correrla como app interna:
+
+| Campo | Valor |
+|---|---|
+| **App name** | `age-db` |
+| **Domain** | *(vacío)* |
+| **Container Image** | `apache/age` |
+| **Tag** | `latest` |
+| **Container Port** | `5432` |
+
+Variables de entorno para la app `age-db`:
+
+| Variable | Valor |
+|---|---|
+| `POSTGRES_USER` | `mi_usuario` |
+| `POSTGRES_PASSWORD` | `mi_password` |
+| `POSTGRES_DB` | `mi_grafo_db` |
+
+Conexión desde tu backend (sección ENVIRONMENT VARIABLES de la app backend):
+
+```env
+DATABASE_URL=postgres://mi_usuario:mi_password@age-db-kuberoapp:5432/mi_grafo_db
+```
+
+> **Nota:** Esta estrategia funciona para cualquier imagen que necesites — no estás limitado a los addons predefinidos de Kubero.
 
 ---
 

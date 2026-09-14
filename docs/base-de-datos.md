@@ -133,6 +133,40 @@ DATABASE_URL=postgres://mi_usuario:mi_password@age-db-kuberoapp:5432/mi_grafo_db
 
 > **Nota:** Esta estrategia funciona para cualquier imagen que necesites — no estás limitado a los addons predefinidos de Kubero.
 
+### ⚠️ Almacenamiento: las apps internas NO guardan datos por defecto
+
+Este es el punto que más confunde a quien prueba esto por primera vez, así que léelo con calma.
+
+Cuando despliegas una app en Kubero (incluida una app interna sin dominio) usando el formulario normal de **"Create App"**, el almacenamiento que se le asigna es **efímero** (`emptyDir` en términos de Kubernetes). Eso significa que si el pod se reinicia — por una actualización, un error, o simplemente porque el nodo lo reprograma — **todo lo que hayas guardado dentro del contenedor se pierde**.
+
+Esto es distinto de los **Addons** (como el PostgreSQL de la primera sección de esta página), que sí incluyen un campo de **Storage Class** en su formulario y sí sobreviven a un reinicio.
+
+| Tipo de recurso | ¿Tiene almacenamiento persistente? | Dónde se configura |
+|---|---|---|
+| Addon (PostgreSQL, MySQL, MongoDB, Redis, etc.) | ✅ Sí, por defecto | Campo **Storage Class** en el formulario del addon |
+| App normal (con o sin dominio, imagen custom) | ❌ No, por defecto | No existe ese campo en el formulario de apps |
+
+**¿Cuándo importa esto?**
+
+- Si tu servicio interno es una base de datos de un tipo que **sí** está entre los addons de Kubero (Postgres, MySQL, MongoDB, etc.), usa el addon en vez de una app custom — ya trae persistencia resuelta.
+- Si necesitas una imagen que **no** es uno de esos addons (como el ejemplo de Apache AGE de arriba) y sí necesita guardar datos entre reinicios, el formulario de Kubero no te da esa opción todavía. Hay que agregar el volumen manualmente por fuera de la interfaz — habla con quien administra el clúster para que te ayude a vincular un `PersistentVolumeClaim` a tu app.
+
+> Esta limitación fue detectada durante el desarrollo del fork de Kubero para la UCT y quedó registrada como mejora pendiente: agregar un campo de almacenamiento persistente al formulario de apps, igual al que ya tienen los addons.
+
+### Cómo verificar que la conexión interna funciona
+
+Antes de conectar tu app real, puedes confirmar que el servicio interno responde. Entra a la consola web de tu app (o a una terminal con acceso al cluster) y prueba:
+
+```bash
+# ¿El puerto responde? (reemplaza por el nombre y puerto de tu servicio)
+nc -zv mi-db-kuberoapp 5432
+
+# ¿El nombre resuelve correctamente?
+nslookup mi-db-kuberoapp
+```
+
+Si `nc` responde `open`, el servicio está activo y accesible por nombre desde tu proyecto. Si da `refused` o se queda esperando, revisa que el puerto configurado en **Container Port** coincida con el puerto real que usa tu imagen.
+
 ---
 
 ## Variables de Entorno

@@ -4,9 +4,9 @@ El **autodeploy** permite que cada vez que un estudiante hace `git push` a su re
 
 El flujo completo es:
 
-```
-git push → GitHub Actions (construye imagen) → llama API de Kubero → Kubero redespliegue ✓
-```
+![Diagrama de secuencia del autodeploy: desde el git push hasta que el pod se actualiza](imagenes/27-autodeploy-diagrama-secuencia.png)
+
+En resumen: `git push` → GitHub Actions construye la imagen → llama al API de Kubero → Kubero redespliega ✓
 
 ---
 

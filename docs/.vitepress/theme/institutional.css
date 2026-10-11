@@ -123,22 +123,34 @@ body { background: var(--uct-workspace); }
   overflow-wrap: anywhere;
 }
 .Layout .VPDoc .vp-doc a > code { color: var(--vp-c-brand-1); }
-.Layout .VPDoc .vp-doc div[class*='language-'] { margin: 24px 0; border-radius: 8px; background: #0b1119; }
+.Layout .VPDoc .vp-doc div[class*='language-'] { margin: 24px 0; border-radius: 8px; background: var(--vp-code-block-bg); }
 .Layout .VPDoc .vp-doc div[class*='language-'] pre { padding: 20px 24px; line-height: 1.75; font-size: 13px; }
 .Layout .VPDoc .vp-doc div[class*='language-'] code { font-weight: 500; }
-.Layout .VPDoc .vp-doc div[class*='language-'] code span[style*='--shiki-dark:#6A737D' i] { color: #a7b5c8; }
+.dark .Layout .VPDoc .vp-doc div[class*='language-'] code span[style*='--shiki-dark:#6A737D' i] { color: #a7b5c8; }
+html:not(.dark) .Layout .VPDoc .vp-doc div[class*='language-'] code span[style*='--shiki-light:#6A737D' i] { color: #526073; }
+html:not(.dark) .Layout .VPDoc .vp-doc div[class*='language-'] code span[style*='--shiki-light:#D73A49' i] { color: #b42332; }
+html:not(.dark) .Layout .VPDoc .vp-doc div[class*='language-'] code span[style*='--shiki-light:#E36209' i] { color: #9a4700; }
 .Layout .VPDoc .vp-doc div[class*='language-'] button.copy { border-radius: 6px; }
 .Layout .VPDoc .vp-doc .custom-block { padding: 16px 20px; border-radius: 8px; font-size: 15px; line-height: 1.75; }
 .Layout .VPDoc .vp-doc .custom-block-title { font-weight: 600; }
 .Layout .VPDoc .vp-doc .custom-block :last-child { margin-bottom: 0; }
-.Layout .VPDoc .vp-doc table {
-  width: 100%;
+.Layout .VPDoc .vp-doc .table-scroll {
+  max-width: 100%;
   margin: 24px 0;
+  overflow-x: auto;
   border: 1px solid var(--uct-line);
   border-radius: 8px;
+  background: var(--uct-panel);
+}
+.Layout .VPDoc .vp-doc table {
+  display: table;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
   border-spacing: 0;
   border-collapse: separate;
-  overflow-x: auto;
+  overflow: visible;
   font-size: 14px;
   line-height: 1.65;
 }
@@ -148,7 +160,7 @@ body { background: var(--uct-workspace); }
 .Layout .VPDoc .vp-doc tr:nth-child(2n) { background: var(--vp-c-bg-alt); }
 .Layout .VPDoc .vp-doc tbody tr:last-child td { border-bottom: 0; }
 .Layout .VPDoc .vp-doc table :not(pre) > code { overflow-wrap: normal; word-break: normal; }
-.Layout .VPDoc .vp-doc table:focus-visible { outline: 3px solid var(--vp-c-brand-1); outline-offset: 2px; }
+.Layout .VPDoc .vp-doc .table-scroll:focus-visible { outline: 3px solid var(--vp-c-brand-1); outline-offset: 2px; }
 .Layout .VPDoc .vp-doc img {
   display: block;
   max-width: 100%;

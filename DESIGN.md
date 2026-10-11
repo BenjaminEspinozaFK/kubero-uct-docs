@@ -193,7 +193,9 @@ Búsqueda local sobre panel de tema, borde visible en el campo y selección azul
 
 ### Technical content
 
-Código sobre `navigation-dark` en ambos temas; comentarios corregidos a `#A7B5C8` para lectura sobre consola. Tablas con encabezados tonales, filas alternas y separadores discretos. Citas y avisos usan paneles compactos; el estado conserva texto además de color.
+Código sobre `#F4F6F9` en claro y `navigation-dark` en oscuro, con resaltado Shiki correspondiente a cada tema. Los comentarios usan `#526073` en claro y `#A7B5C8` en oscuro; los tokens rojos y naranjas claros usan `#B42332` y `#9A4700` para mantener contraste. Lenguaje, números de línea y controles de copia también responden al tema.
+
+Las tablas mantienen su layout nativo y ancho del 100% dentro de `.table-scroll`, un contenedor con borde y scroll horizontal accesible por teclado. Encabezados tonales, filas alternas y separadores cubren todo el ancho; en móvil solo el contenedor desplaza las columnas que no caben. Citas y avisos usan paneles compactos; el estado conserva texto además de color.
 
 ### Accessibility
 

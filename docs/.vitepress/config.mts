@@ -7,6 +7,12 @@ export default defineConfig({
   base: '/kubero-uct-docs/',
   markdown: {
     languageAlias: { env: 'dotenv' },
+    config(md) {
+      // Keep native table layout; scroll the surrounding region on small screens.
+      md.renderer.rules.table_open = () =>
+        '<div class="table-scroll" tabindex="0" role="region" aria-label="Tabla de documentación"><table>\n'
+      md.renderer.rules.table_close = () => '</table></div>\n'
+    },
   },
 
   themeConfig: {

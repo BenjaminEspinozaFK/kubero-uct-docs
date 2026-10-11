@@ -5,9 +5,12 @@ export default defineConfig({
   description: 'Documentación de la plataforma CI/CD educativa con Kubero',
   lang: 'es',
   base: '/kubero-uct-docs/',
+  markdown: {
+    languageAlias: { env: 'dotenv' },
+  },
 
   themeConfig: {
-    logo: '/kubero-logo.svg',
+    logo: { src: '/logouct-header.png', alt: 'Universidad Católica de Temuco, Facultad de Ingeniería' },
     siteTitle: 'Kubero UCT',
 
     nav: [
@@ -40,7 +43,23 @@ export default defineConfig({
     },
 
     search: {
-      provider: 'local'
+      provider: 'local',
+      options: {
+        locales: {
+          root: {
+            translations: {
+              button: { buttonText: 'Buscar', buttonAriaLabel: 'Buscar en la documentación' },
+              modal: {
+                displayDetails: 'Mostrar detalles',
+                resetButtonTitle: 'Borrar búsqueda',
+                backButtonTitle: 'Cerrar búsqueda',
+                noResultsText: 'Sin resultados para',
+                footer: { selectText: 'seleccionar', navigateText: 'navegar', closeText: 'cerrar' },
+              },
+            },
+          },
+        },
+      },
     },
 
     outline: {
@@ -58,5 +77,6 @@ export default defineConfig({
     darkModeSwitchTitle: 'Cambiar a modo oscuro',
     sidebarMenuLabel: 'Menú',
     returnToTopLabel: 'Volver arriba',
+    skipToContentLabel: 'Ir al contenido',
   }
 })

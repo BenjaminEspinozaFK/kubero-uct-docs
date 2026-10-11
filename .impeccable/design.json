@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-11T16:37:45Z",
+  "title": "Design System: Documentación Kubero UCT",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Azul institucional UCT" },
+      "primary-dark-theme": { "role": "primary", "displayName": "Azul UCT para tema oscuro" },
+      "workspace-light": { "role": "neutral", "displayName": "Fondo de trabajo claro" },
+      "workspace-dark": { "role": "neutral", "displayName": "Fondo de trabajo oscuro" },
+      "navigation-light": { "role": "neutral", "displayName": "Navegación clara" },
+      "navigation-dark": { "role": "neutral", "displayName": "Navegación y consola oscuras" },
+      "panel-light": { "role": "neutral", "displayName": "Panel blanco" },
+      "panel-dark": { "role": "neutral", "displayName": "Panel pizarra" },
+      "muted-dark": { "role": "neutral", "displayName": "Texto secundario y comentarios de consola" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Título de portada", "purpose": "Encabezado de la portada existente; 26px en móvil." },
+      "headline": { "displayName": "Título de artículo", "purpose": "h1 del documento; 24px en móvil." },
+      "title": { "displayName": "Título de sección", "purpose": "h2 del artículo y paneles de portada." },
+      "body": { "displayName": "Lectura", "purpose": "Instrucciones con ancho máximo del panel ampliado un 50%." },
+      "label": { "displayName": "Grupo de navegación", "purpose": "Etiquetas compactas del menú y del índice." },
+      "code": { "displayName": "Contenido técnico", "purpose": "Bloques de código; la familia indicada usa fuentes instaladas y respaldos, sin fuentes empaquetadas." }
+    },
+    "shadows": [
+      { "name": "search-dialog", "value": "0 16px 48px rgba(14, 22, 32, .24)", "purpose": "Elevar la búsqueda local como superficie temporal; paneles ordinarios sin sombra." }
+    ],
+    "motion": [
+      { "name": "state-transition", "value": "140ms ease-out", "purpose": "Cambios de color de botones y enlaces del índice de guías." },
+      { "name": "reduced-motion", "value": "transition: none; animation: none; scroll-behavior: auto", "purpose": "Aplicar al detectar prefers-reduced-motion: reduce." }
+    ],
+    "breakpoints": [
+      { "name": "mobile-max", "value": "767px" },
+      { "name": "desktop-navigation", "value": "960px" },
+      { "name": "document-outline", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Acción principal",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Acción de portada con altura estable y foco visible.",
+      "html": "<button class=\"ds-primary\">Abrir guía</button>",
+      "css": ".ds-primary { height:44px; padding:0 16px; border:1px solid transparent; border-radius:8px; background:var(--vp-button-brand-bg, #0075b4); color:var(--vp-button-brand-text, #fff); font-family:var(--vp-font-family-base, system-ui); font-size:14px; font-weight:600; transition:background-color 140ms ease-out, border-color 140ms ease-out; cursor:pointer; } .ds-primary:hover, .ds-primary:active { background:var(--vp-button-brand-hover-bg, #005888); } .ds-primary:focus-visible { outline:3px solid var(--vp-c-brand-1, #0075b4); outline-offset:2px; } @media (prefers-reduced-motion:reduce) { .ds-primary { transition:none; } }"
+    },
+    {
+      "name": "Panel de lectura",
+      "kind": "card",
+      "refersTo": "reading-panel-light",
+      "description": "Contenedor tonal con borde sutil, ancho máximo ampliado un 50% y adaptación móvil.",
+      "html": "<article class=\"ds-reading\"><h1>Documentación Kubero UCT</h1><p>Consulta las instrucciones de la plataforma.</p><a href=\"#guia\">Abrir guía</a></article>",
+      "css": ".ds-reading { max-width:calc(111ch + 123px); padding:32px 40px; border:1px solid var(--uct-line, rgba(135,135,135,.2)); border-radius:8px; background:var(--uct-panel, #fff); color:var(--vp-c-text-1, #1a1a1a); font-family:var(--vp-font-family-base, system-ui); font-size:16px; line-height:1.75; } .ds-reading h1 { margin:0 0 24px; padding-bottom:24px; border-bottom:1px solid var(--uct-line, rgba(135,135,135,.2)); font-size:26px; line-height:1.35; font-weight:600; letter-spacing:-.02em; } .ds-reading a { color:var(--vp-c-brand-1, #0075b4); text-underline-offset:4px; } .ds-reading a:hover { color:var(--vp-c-brand-2, #005888); } .ds-reading a:focus-visible { outline:3px solid var(--vp-c-brand-1, #0075b4); outline-offset:2px; } @media (max-width:959px) { .ds-reading { padding:28px 32px; } } @media (max-width:767px) { .ds-reading { padding:24px 20px; } .ds-reading h1 { font-size:24px; } }"
+    },
+    {
+      "name": "Entrada activa de navegación",
+      "kind": "nav",
+      "refersTo": "navigation-item",
+      "description": "Selección tonal que conserva el contexto del lector.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link\" aria-current=\"page\" href=\"#guia\">Guía de uso</a></nav>",
+      "css": ".ds-nav { padding:16px; background:var(--uct-navigation, #f7f9fc); } .ds-nav-link { display:flex; align-items:center; min-height:40px; padding:5px 12px; border-radius:6px; font-family:var(--vp-font-family-base, system-ui); font-size:14px; line-height:1.5; text-decoration:none; color:var(--vp-c-brand-1, #0075b4); background:var(--vp-c-brand-soft, rgba(0,117,180,.1)); font-weight:600; } .ds-nav-link:hover { background:var(--uct-secondary, #eaeff5); } .ds-nav-link:focus-visible { outline:3px solid var(--vp-c-brand-1, #0075b4); outline-offset:2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Manual institucional del centro de operaciones",
+    "overview": "La documentación adapta la identidad de Kubero UCT a una superficie de lectura en VitePress: navegación compacta, panel principal definido y guías fáciles de recorrer. La voz visual es sobria, institucional y técnica, con densidad suficiente para conservar contexto sin comprimir las instrucciones. La autoridad visual permanece en ../kubero/DESIGN.md y el contrato local en .impeccable/surfaces/documentacion.md.",
+    "keyCharacteristics": [
+      "Azul UCT y superficies equivalentes en temas claro y oscuro.",
+      "Lectura de 16px, paneles tonales y jerarquía contenida.",
+      "Navegación activa y foco visibles, código oscuro y capturas existentes.",
+      "Reutilización de controles VitePress, artículos, textos, rutas y comportamiento."
+    ],
+    "rules": [
+      { "name": "Color semántico", "body": "Advertencias, errores y éxito conservan semántica de estado; no son acentos decorativos.", "section": "colors" },
+      { "name": "Lectura sin compresión", "body": "Mantener cuerpo de 16px y ancho máximo del panel ampliado un 50%; resolver tablas con desplazamiento interno.", "section": "typography" },
+      { "name": "Elevación temporal", "body": "Usar capas tonales y bordes en paneles; reservar la sombra a búsqueda local.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do mantener roles de color para ambos temas, medida interior de lectura y escala del cuerpo.",
+      "Do preservar navegación por teclado, foco visible y movimiento reducido.",
+      "Do conservar artículos, capturas, textos, rutas y comportamiento.",
+      "Do conservar proporciones y texto alternativo del logotipo institucional.",
+      "Do reutilizar los rasters existentes: no se produjeron ni copiaron nuevos activos en este rediseño."
+    ],
+    "donts": [
+      "Don't reintroducir el morado histórico de Kubero como acento institucional.",
+      "Don't usar amarillo, verde o rojo como decoración, ni sombras en cada panel.",
+      "Don't añadir emojis o ilustraciones decorativas a la portada.",
+      "Don't reducir texto para encajar tablas, fragmentar identificadores de tabla o atribuir fuentes empaquetadas a las pilas de respaldo."
+    ]
+  }
+}

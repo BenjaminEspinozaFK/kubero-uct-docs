@@ -1,0 +1,163 @@
+/* Roles from Kubero UCT, adapted to VitePress's reading surfaces. */
+:root {
+  --vp-font-family-base: 'Vista Sans', 'Roboto', system-ui, -apple-system, sans-serif;
+  --vp-font-family-mono: 'Fira Code', SFMono-Regular, Menlo, Consolas, monospace;
+  --vp-c-brand-1: #0075b4;
+  --vp-c-brand-2: #005888;
+  --vp-c-brand-3: #0075b4;
+  --vp-c-brand-soft: rgba(0, 117, 180, .1);
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f7f9fc;
+  --vp-c-bg-elv: #ffffff;
+  --vp-c-bg-soft: #f4f6f9;
+  --vp-c-default-1: #596579;
+  --vp-c-default-2: #dce3ed;
+  --vp-c-default-3: #eaeff5;
+  --vp-c-default-soft: #eaeff5;
+  --vp-c-text-1: #1a1a1a;
+  --vp-c-text-2: #526073;
+  --vp-c-text-3: #647185;
+  --vp-c-divider: rgba(135, 135, 135, .2);
+  --vp-c-border: #c8d2de;
+  --vp-c-gutter: #eaeff5;
+  --vp-c-tip-1: #0075b4;
+  --vp-c-tip-soft: rgba(0, 117, 180, .08);
+  --vp-c-warning-1: #7a6400;
+  --vp-c-warning-soft: rgba(237, 197, 0, .15);
+  --vp-c-danger-1: #b42332;
+  --vp-c-danger-soft: rgba(239, 68, 68, .08);
+  --vp-button-brand-bg: #0075b4;
+  --vp-button-brand-hover-bg: #005888;
+  --vp-button-brand-active-bg: #005888;
+  --vp-button-brand-text: #fff;
+  --vp-button-brand-hover-text: #fff;
+  --vp-button-alt-bg: #eaeff5;
+  --vp-button-alt-text: #005888;
+  --vp-button-alt-hover-bg: #dce3ed;
+  --vp-button-alt-hover-text: #005888;
+  --vp-home-hero-name-color: var(--vp-c-brand-1);
+  --vp-home-hero-name-background: none;
+  --vp-code-block-bg: #0b1119;
+  --vp-code-copy-code-bg: #16202d;
+  --vp-code-copy-code-hover-bg: #2a374a;
+  --vp-code-copy-code-active-text: #e2e8f0;
+  --vp-code-lang-color: #a7b5c8;
+  --vp-code-line-number-color: #a7b5c8;
+  --vp-code-block-divider-color: #2a374a;
+  --vp-code-line-highlight-color: rgba(0, 144, 220, .13);
+  --uct-radius: 8px;
+}
+
+.dark {
+  --vp-c-brand-1: #0090dc;
+  --vp-c-brand-2: #38b4f4;
+  --vp-c-brand-3: #0090dc;
+  --vp-c-brand-soft: rgba(0, 144, 220, .14);
+  --vp-c-bg: #0e1620;
+  --vp-c-bg-alt: #0b1119;
+  --vp-c-bg-elv: #16202d;
+  --vp-c-bg-soft: #16202d;
+  --vp-c-default-1: #a7b5c8;
+  --vp-c-default-2: #2a374a;
+  --vp-c-default-3: #1b2430;
+  --vp-c-default-soft: #1b2430;
+  --vp-c-text-1: #e2e8f0;
+  --vp-c-text-2: #a7b5c8;
+  --vp-c-text-3: #93a4ba;
+  --vp-c-border: #344357;
+  --vp-c-gutter: #1b2430;
+  --vp-c-tip-1: #0090dc;
+  --vp-c-tip-soft: rgba(0, 144, 220, .12);
+  --vp-c-warning-1: #edc500;
+  --vp-c-warning-soft: rgba(237, 197, 0, .1);
+  --vp-c-danger-1: #ff8790;
+  --vp-c-danger-soft: rgba(239, 68, 68, .12);
+  --vp-button-alt-bg: #1b2430;
+  --vp-button-alt-text: #e2e8f0;
+  --vp-button-alt-hover-bg: #2a374a;
+  --vp-button-alt-hover-text: #fff;
+}
+
+html { scrollbar-color: var(--vp-c-border) var(--vp-c-bg-alt); }
+::selection { background: var(--vp-c-brand-soft); color: var(--vp-c-text-1); }
+input { caret-color: var(--vp-c-brand-1); }
+:where(a, button, input, summary):focus-visible {
+  outline: 3px solid var(--vp-c-brand-1);
+  outline-offset: 3px;
+}
+.VPNavBarTitle .logo { height: 38px; width: auto; }
+.VPNavBarTitle .title { gap: 16px; font-weight: 600; }
+.VPNavBar { background: var(--vp-c-bg); }
+.VPSidebarItem .item { border-radius: 6px; }
+.VPSidebarItem.is-active > .item { background: var(--vp-c-brand-soft); }
+.VPSidebarItem.level-1 > .item { padding-left: 12px; padding-right: 8px; }
+.VPHome .VPButton.medium { border-radius: var(--uct-radius); }
+.VPButton { transition: background-color 140ms ease-out, border-color 140ms ease-out; }
+.VPDoc .content-container { max-width: 74ch !important; }
+.vp-doc { font-size: 16px; line-height: 1.8; }
+.vp-doc h1 { font-size: 32px; line-height: 1.25; letter-spacing: -.025em; }
+.vp-doc h2 { font-size: 23px; line-height: 1.4; letter-spacing: -.015em; margin-top: 40px; }
+.vp-doc h3 { font-size: 18px; line-height: 1.5; }
+.vp-doc :is(h1, h2, h3) { font-weight: 600; text-wrap: balance; }
+.vp-doc a { text-underline-offset: 3px; }
+.vp-doc img { border: 1px solid var(--vp-c-divider); border-radius: var(--uct-radius); margin: 24px 0; }
+.vp-doc blockquote { border-left-width: 1px; color: var(--vp-c-text-2); }
+.vp-doc :is(div[class*='language-'], .custom-block) { border-radius: var(--uct-radius); }
+.vp-doc div[class*='language-'] code,
+.vp-doc div[class*='language-'] code span { color: var(--shiki-dark, #e2e8f0); }
+.vp-doc div[class*='language-'] pre { font-size: 13px; line-height: 1.75; }
+.vp-doc th { background: var(--vp-c-bg-soft); font-weight: 600; }
+.vp-doc td, .vp-doc th { padding: 10px 16px; font-variant-numeric: tabular-nums; }
+.vp-doc tr:nth-child(2n) { background: var(--vp-c-bg-alt); }
+.pager-link { border-radius: var(--uct-radius) !important; background: var(--vp-c-bg-soft); }
+.VPHome { padding-bottom: 64px !important; }
+.VPHomeHero .container { max-width: 1120px; }
+.VPHomeHero .main { max-width: 820px; }
+.VPHomeHero .name, .VPHomeHero .text { font-size: clamp(32px, 4vw, 52px); line-height: 1.15; letter-spacing: -.03em; font-weight: 600; }
+.VPHomeHero .text { max-width: 820px; }
+.VPHomeHero .tagline { max-width: 650px; font-size: 19px; line-height: 1.65; color: var(--vp-c-text-2); }
+.VPHomeHero .actions { padding-top: 24px; }
+.guide-index, .platform-notes { max-width: 1120px; margin: 0 auto; }
+.guide-index { display: grid; grid-template-columns: 1fr 1.65fr; gap: 64px; padding-top: 32px; border-top: 1px solid var(--vp-c-divider); }
+.guide-index h2, .platform-notes h2 { font-size: 24px; line-height: 1.35; font-weight: 600; letter-spacing: -.02em; text-wrap: balance; }
+.guide-index__intro p { margin-top: 16px; color: var(--vp-c-text-2); line-height: 1.7; }
+.guide-index__concepts { display: inline-block; margin-top: 24px; color: var(--vp-c-brand-1); font-size: 14px; font-weight: 600; }
+.guide-index__concepts:hover { text-decoration: underline; text-underline-offset: 4px; }
+.guide-index__list { margin: 0; padding: 0; list-style: none; }
+.guide-index__list li + li { border-top: 1px solid var(--vp-c-divider); }
+.guide-index__list a { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 20px 16px; border-radius: 6px; transition: background-color 140ms ease-out; }
+.guide-index__list a:hover { background: var(--vp-c-brand-soft); }
+.guide-index__list h3 { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); }
+.guide-index__list p { margin-top: 6px; color: var(--vp-c-text-2); font-size: 14px; line-height: 1.65; }
+.guide-index__list svg { flex-shrink: 0; color: var(--vp-c-brand-1); }
+.platform-notes { margin-top: 64px; padding: 32px; border-radius: var(--uct-radius); background: var(--vp-c-bg-soft); }
+.platform-notes dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 24px; }
+.platform-notes dt { font-size: 15px; font-weight: 600; }
+.platform-notes dd { margin: 8px 0 0; font-size: 14px; line-height: 1.75; color: var(--vp-c-text-2); }
+/* These sections live inside VitePress's Markdown wrapper. */
+.VPHome .vp-doc.container { max-width: none; padding: 0; margin: 0; }
+.vp-doc .guide-index h2, .vp-doc .platform-notes h2 { margin: 0; padding: 0; border: 0; }
+.vp-doc .guide-index__list { margin: 0; padding: 0; list-style: none; }
+.vp-doc .guide-index__list li { margin: 0; }
+.vp-doc .guide-index__list a { text-decoration: none; font-weight: 400; }
+.vp-doc .guide-index__list h3 { margin: 0; }
+.vp-doc .guide-index__list p { margin: 6px 0 0; }
+.vp-doc .guide-index__intro p { margin: 16px 0 0; }
+@media (max-width: 1199px) { .guide-index, .platform-notes { margin-left: 32px; margin-right: 32px; } }
+@media (min-width: 960px) { .VPHomeHero { padding-top: 72px !important; padding-bottom: 56px !important; } }
+@media (max-width: 767px) {
+  .VPNavBarTitle .logo { height: 30px; }
+  .VPNavBarTitle .title { gap: 10px; font-size: 14px; }
+  .VPHomeHero .main { text-align: left; }
+  .VPHomeHero .actions { justify-content: flex-start; }
+  .VPHomeHero .tagline { font-size: 17px; }
+  .guide-index, .platform-notes { margin-left: 24px; margin-right: 24px; }
+  .guide-index { grid-template-columns: 1fr; gap: 24px; }
+  .guide-index__list a { padding-left: 0; padding-right: 8px; }
+  .platform-notes { padding: 24px; margin-top: 40px; }
+  .platform-notes dl { grid-template-columns: 1fr; gap: 24px; }
+  .vp-doc h1 { font-size: 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+}

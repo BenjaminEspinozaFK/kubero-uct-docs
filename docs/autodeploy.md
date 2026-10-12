@@ -15,26 +15,29 @@ En resumen: `git push` → GitHub Actions construye la imagen → llama al API d
 El profesor genera un **token de autorización** para el API de Kubero y lo comparte con los estudiantes. Este token le permite a GitHub Actions autorizarse ante Kubero para solicitar el redepliegue.
 
 1. Accede a `https://kubero.inf.uct.cl` con tu usuario
-2. Haz clic en tu avatar (esquina superior derecha) → **"Profile"**
-3. En la sección **"API Tokens"**, haz clic en **"+ CREATE TOKEN"**
+2. Abre el menú de tu avatar → **Perfil** (**Profile**).
+3. En **Tokens de API** (**API Tokens**), pulsa **Crear token** (**Create Token**).
 4. Completa los campos:
 
    | Campo | Valor |
    |---|---|
    | **Name** | `autodeploy-github` |
-   | **Expires At** | Una fecha lejana, ej: `31/12/2027` — debes completar también la hora, ej: `23:59` |
+   | **Expires At** | Fecha y hora futuras, acordadas para la duración del curso. Completa ambas; el API rechaza fechas vencidas. |
+
+![Formulario actual de creación de token con nombre y expiración](imagenes/token-crear-actual.png)
 
 5. Haz clic en **"CREATE"**
 6. **Copia el token inmediatamente.** Solo se muestra una vez y no se puede recuperar después.
-7. Comparte este token con tus estudiantes. Puede ser el mismo token para todos.
-
-![Pantalla Profile con sección API Tokens y botón Create Token](imagenes/13-autodeploy-profile-tokens.png)
-
-![Modal Create Token con nombre y fecha de expiración completados](imagenes/14-autodeploy-create-token-modal.png)
 
 > Tras hacer clic en **CREATE**, aparecerá una ventana con el token generado y un botón **COPY TOKEN**. Cópialo inmediatamente — solo se muestra una vez y no puede recuperarse. Por seguridad no se incluye captura de esta pantalla.
 
 > Si el token vence o se pierde, el profesor debe generar uno nuevo y cada estudiante deberá actualizar el secret `KUBERO_TOKEN` en su repositorio de GitHub.
+
+7. Comparte este token con tus estudiantes. Puede ser el mismo token para todos.
+
+![Perfil actual con lista de tokens de API](imagenes/perfil-tokens-actual.png)
+
+
 
 ---
 
@@ -88,7 +91,6 @@ jobs:
             "https://kubero.inf.uct.cl/api/apps/NOMBRE-PIPELINE/production/NOMBRE-APP/restart" \
             -H "Authorization: Bearer ${{ secrets.KUBERO_TOKEN }}"
 ```
-
 > - `"Docker Build"` → el nombre exacto del workflow que construye tu imagen (revisa la pestaña Actions de tu repo para ver el nombre)
 > - `NOMBRE-PIPELINE` → el nombre del pipeline en Kubero (ej: `mi-proyecto`)
 > - `NOMBRE-APP` → el nombre de la app dentro del pipeline (ej: `frontend` o `backend`)
@@ -103,6 +105,7 @@ jobs:
 3. Primero se ejecuta el workflow de build (construye la imagen)
 4. Al terminar, se activa automáticamente el workflow **"Deploy to Kubero"**
 5. El paso debe mostrar `200` como resultado — eso confirma que Kubero recibió el redepliegue
+6. Revisa la aplicación en Kubero y sus registros.
 
 ![Pestaña Actions mostrando los workflows GHCR Images y Deploy to Kubero en secuencia](imagenes/17-autodeploy-actions-workflows.png)
 
@@ -110,6 +113,7 @@ jobs:
 
 | Código de respuesta | Significado |
 |---|---|
-| `200` | Redepliegue exitoso |
-| `401` o `403` | Token incorrecto o vencido — pídele al profesor uno nuevo |
+| `200` | Solicitud de reinicio aceptada; verifica después el estado de la app. |
+| `401` | Token inválido, vencido o revocado, o cuenta desactivada. El Profesor debe revisar su token y cuenta. |
+| `403` | Permisos insuficientes, acceso al equipo del pipeline o modo de solo lectura. |
 | `404` | El nombre del pipeline o app no coincide con Kubero — verifica los nombres |

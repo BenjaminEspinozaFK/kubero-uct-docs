@@ -2,38 +2,40 @@
 
 ## Agregar una Base de Datos (Addon PostgreSQL)
 
-Si tu app necesita una base de datos, Kubero puede crearla como un **Addon**. Esta base de datos es accesible únicamente desde dentro del cluster, nunca desde internet.
+Los **Complementos** permiten incorporar servicios como PostgreSQL a tu aplicación. En el flujo del curso, la base de datos se usa por su servicio interno; no necesita un dominio público.
 
 ### Cómo agregar el Addon
 
-1. Entra a la app que necesita la base de datos (ej: tu `backend`)
-2. Haz clic en el ícono de edición (lápiz ✏️)
-3. Desplázate hasta la sección **"ADD-ONS"**
-4. Haz clic en **"+"** y selecciona **"PostgreSQL"**
+1. Abre la app que necesita la base de datos y pulsa el lápiz para editarla.
 
-![Sección ADD-ONS con addon PostgreSQL y botón Add Addon](imagenes/19-addon-postgresql-boton.png)
+![Aplicación recién creada sin métricas disponibles](imagenes/app-iniciando-actual.png)
 
-5. Completa el formulario:
+2. Busca **Complementos** y pulsa **Add Addon** o el botón **+**.
+3. Selecciona **PostgreSQL** y completa el formulario ofrecido por la plantilla.
 
-   | Campo | Descripción | Ejemplo |
-   |---|---|---|
-   | **PostgreSQL Instance Name** | Identificador del addon | `postgres` |
-   | **Version/Tag** | Versión de PostgreSQL | `16-alpine` |
-   | **Postgres Password** | Contraseña del usuario administrador de la DB | `mi-password-seguro` |
-   | **Additional Username** | Usuario adicional para tu app | `mi_usuario` |
-   | **Additional User Password** | Contraseña de ese usuario | `mi-password-seguro` |
-   | **Database Name** | Nombre de la base de datos | `mi_base_de_datos` |
-   | **Storage Class** | Tipo de almacenamiento en el cluster | Deja el valor por defecto que aparece en el formulario |
+![Complemento PostgreSQL en el formulario actual de la app](imagenes/app-complementos-actual.png)
 
-   > **Importante:** En cada campo escribe **solo el valor**, no el nombre de la variable.
-   > - ❌ Incorrecto: `POSTGRES_PASSWORD=mi-password-seguro`
-   > - ✅ Correcto: `mi-password-seguro`
 
-![Formulario del addon PostgreSQL con campos vacíos listos para completar](imagenes/20-addon-postgresql-formulario.png)
+| Campo | Descripción | Ejemplo |
+|---|---|---|
+| **PostgreSQL Instance Name** | Identificador del addon | `postgres` |
+| **Version/Tag** | Versión de PostgreSQL | `16-alpine` |
+| **Postgres Password** | Contraseña del usuario administrador de la DB | `mi-password-seguro` |
+| **Additional Username** | Usuario adicional para tu app | `mi_usuario` |
+| **Additional User Password** | Contraseña de ese usuario | `mi-password-seguro` |
+| **Database Name** | Nombre de la base de datos | `mi_base_de_datos` |
+| **Storage Class** | Tipo de almacenamiento en el cluster | Deja el valor por defecto que aparece en el formulario |
 
-> El formulario muestra los campos vacíos listos para completar. Los valores por defecto (`postgres`, `17.6`, `8Gi`, `ReadWriteOnce`) pueden dejarse como están en la mayoría de los casos. Los campos sensibles como **Postgres Password**, **Additional Username**, **Additional User Password** y **Database Name** deben completarse con los valores específicos de tu proyecto — no se muestran en la captura por seguridad.
+> **Importante:** En cada campo escribe **solo el valor**, no el nombre de la variable.
+> - ❌ Incorrecto: `POSTGRES_PASSWORD=mi-password-seguro`
+> - ✅ Correcto: `mi-password-seguro`
 
-6. Haz clic en **"Save"**
+
+> El formulario muestra los campos vacíos listos para completar. Los valores por defecto (`postgres`, `17.6`, `8Gi`, `ReadWriteOnce`) pueden dejarse como están en la mayoría de los casos. Los campos sensibles como **Postgres Password**, **Additional Username**, **Additional User Password** y **Database Name** deben completarse con los valores específicos de tu proyecto.
+
+
+4. Guarda la configuración del complemento y pulsa **Actualizar** en la app.
+5. Comprueba el despliegue del servicio (ver logs).
 
 ### Nombre del servicio de la base de datos
 
@@ -53,89 +55,60 @@ postgres://mi_usuario:mi-password@server-postgres:5432/mi_base_de_datos
 
 ## App Interna sin Exposición Pública (Imagen Custom)
 
-Kubero permite desplegar **cualquier imagen Docker** como una app interna — sin dominio público y sin que sea accesible desde internet. Esto es útil cuando necesitas una base de datos con imagen personalizada u otro servicio interno que el addon estándar no cubre.
+Puedes desplegar una imagen personalizada como app interna, por ejemplo una base de datos con extensiones que el complemento disponible no incluya.
 
 ### ¿Cuándo usar esto?
 
 | Caso | Ejemplo |
 |---|---|
-| Base de datos con extensiones especiales | Apache AGE (Postgres para grafos), PostGIS, TimescaleDB |
-| Imagen de Postgres propia | Tu propio `ghcr.io/usuario/mi-postgres:latest` |
-| Servicio interno (Redis, RabbitMQ, etc.) | No expuesto a internet, solo para otros pods |
-| Cualquier contenedor que no habla HTTP | Servicios de mensajería, caches, BDs no relacionales |
+| Base de datos con extensiones | Una imagen de PostgreSQL con extensiones de tu proyecto. |
+| Servicio de caché o mensajería | Redis u otro servicio accesible desde el backend. |
+| Contenedor sin servidor HTTP | Proceso interno que no necesita ingress público. |
 
 ### Cómo crear una app interna
 
-Al crear la app en Kubero, completa los campos así:
-
 | Campo | Qué hacer |
 |---|---|
-| **Domain** | **Déjalo vacío** — sin dominio no se crea ingress público |
-| **Container Image** | URL de tu imagen (`apache/age`, `redis`, etc.) |
-| **Tag** | Versión de la imagen (`latest`, `16`, etc.) |
-| **Container Port** | Puerto que expone el contenedor (`5432` para Postgres, `6379` para Redis) |
-| **Web Replicas** | `1` normalmente |
+| **Dominio** | Dejarlo vacío; no agregar otros dominios. |
+| **Imagen del contenedor** | Imagen del servicio preparada para tu proyecto. |
+| **Etiqueta (Tag)** | Versión compatible con tu aplicación. |
+| **Puerto del contenedor** | Puerto real, por ejemplo `5432` para PostgreSQL. |
+| **Réplicas web** | Habitualmente `1` para un servicio de una sola instancia. |
 
-> Dejar el campo **Domain vacío** es lo que impide que la app quede expuesta a internet. Sin dominio, Kubero no crea una regla de ingress funcional.
+Configura las variables que requiere esa imagen y, si guarda datos, un volumen en la ruta de datos correcta. **SSL** y las opciones de ingress no sustituyen la ausencia de un dominio público.
+
 
 ### Desactivar Health Checks
 
 Los contenedores que no son servidores HTTP (como Postgres o Redis) fallarán los health checks que Kubero activa por defecto. Debes desactivarlos:
 
 1. En la pantalla de edición de la app, busca la sección **"HEALTH CHECKS"**
-2. Desactiva las opciones de liveness y readiness probe
+2. Desactivalo
 
 Si no los desactivas, el pod entrará en `CrashLoopBackOff` porque Kubero intentará hacer peticiones HTTP al puerto del contenedor y fallará.
 
 ### Cómo conectarse desde otra app
 
-Kubero crea un servicio interno de Kubernetes con el nombre **`[nombre-de-tu-app]-kuberoapp`**.
+En este flujo se usa el nombre de servicio `[nombre-de-app]-kuberoapp` para una app interna. Confirma el servicio del despliegue y que el backend pueda resolverlo en su namespace.
 
-**Ejemplo:** si tu app se llama `mi-db`, el hostname interno es `mi-db-kuberoapp`.
+~~~env
+# Ejemplo: servicio de una app interna llamada mi-db
+DATABASE_URL=postgres://usuario:CONTRASENA_DEL_PROYECTO@mi-db-kuberoapp:5432/mi_base_de_datos
+~~~
 
-Desde tu backend, la conexión sería:
-
-```env
-# Para Postgres (app interna llamada "mi-db")
-DATABASE_URL=postgres://usuario:password@mi-db-kuberoapp:5432/mi_base_de_datos
-
-# Para Redis (app interna llamada "mi-cache")
-REDIS_URL=redis://mi-cache-kuberoapp:6379
-```
-
-Agrega esa variable de entorno en la app de tu **backend** dentro de Kubero (sección ENVIRONMENT VARIABLES).
+Registra la conexión en las variables del **backend**, no en el código público del frontend.
 
 ### Ejemplo completo: Apache AGE (Postgres para grafos)
 
-[Apache AGE](https://age.apache.org/) es una imagen de Postgres con soporte para grafos (openCypher). No está disponible como addon, pero puedes correrla como app interna:
+Si tu proyecto necesita una imagen como `apache/age`, comprueba la etiqueta disponible y las instrucciones de esa imagen. Configura un nombre como `age-db`, puerto `5432` y dominio vacío.
 
-| Campo | Valor |
-|---|---|
-| **App name** | `age-db` |
-| **Domain** | *(vacío)* |
-| **Container Image** | `apache/age` |
-| **Tag** | `latest` |
-| **Container Port** | `5432` |
+Define `POSTGRES_USER`, `POSTGRES_PASSWORD` y `POSTGRES_DB` según la imagen y monta almacenamiento en su ruta de datos. No asumas que todas las imágenes de PostgreSQL usan la misma ruta o usuario.
 
-Variables de entorno para la app `age-db`:
-
-| Variable | Valor |
-|---|---|
-| `POSTGRES_USER` | `mi_usuario` |
-| `POSTGRES_PASSWORD` | `mi_password` |
-| `POSTGRES_DB` | `mi_grafo_db` |
-
-Conexión desde tu backend (sección ENVIRONMENT VARIABLES de la app backend):
-
-```env
-DATABASE_URL=postgres://mi_usuario:mi_password@age-db-kuberoapp:5432/mi_grafo_db
-```
-
-> **Nota:** Esta estrategia funciona para cualquier imagen que necesites — no estás limitado a los addons predefinidos de Kubero.
+~~~env
+DATABASE_URL=postgres://mi_usuario:CONTRASENA_DEL_PROYECTO@age-db-kuberoapp:5432/mi_grafo_db
+~~~
 
 ### ⚠️ Almacenamiento: las apps internas NO guardan datos por defecto
-
-Este es el punto que más confunde a quien prueba esto por primera vez, así que léelo con calma.
 
 Cuando despliegas una app en Kubero (incluida una app interna sin dominio) usando el formulario normal de **"Create App"**, el almacenamiento que se le asigna es **efímero** (`emptyDir` en términos de Kubernetes). Eso significa que si el pod se reinicia — por una actualización, un error, o simplemente porque el nodo lo reprograma — **todo lo que hayas guardado dentro del contenedor se pierde**.
 
@@ -149,9 +122,8 @@ Esto es distinto de los **Addons** (como el PostgreSQL de la primera sección de
 **¿Cuándo importa esto?**
 
 - Si tu servicio interno es una base de datos de un tipo que **sí** está entre los addons de Kubero (Postgres, MySQL, MongoDB, etc.), usa el addon en vez de una app custom — ya trae persistencia resuelta.
-- Si necesitas una imagen que **no** es uno de esos addons (como el ejemplo de Apache AGE de arriba) y sí necesita guardar datos entre reinicios, el formulario de Kubero no te da esa opción todavía. Hay que agregar el volumen manualmente por fuera de la interfaz — habla con quien administra el clúster para que te ayude a vincular un `PersistentVolumeClaim` a tu app.
+- Consulta [Volúmenes](extras/volumenes.md) si necesitas una imagen que **no** es uno de esos addons (como el ejemplo de Apache AGE de arriba) y sí necesita guardar datos entre reinicios.
 
-> Esta limitación fue detectada durante el desarrollo del fork de Kubero para la UCT y quedó registrada como mejora pendiente: agregar un campo de almacenamiento persistente al formulario de apps, igual al que ya tienen los addons.
 
 ### Cómo verificar que la conexión interna funciona
 
@@ -171,22 +143,17 @@ Si `nc` responde `open`, el servicio está activo y accesible por nombre desde t
 
 ## Variables de Entorno
 
-Las variables de entorno permiten pasar configuración a tu app sin necesidad de incluirla en el código. Es la forma segura de manejar contraseñas, URLs y claves API.
+Las variables separan configuración y código. La guía completa está en [Extras → Variables de entorno](extras/variables-de-entorno.md).
 
 ### Cómo agregar variables
 
-1. Edita la app en Kubero (ícono lápiz ✏️)
-2. Desplázate hasta la sección **"ENVIRONMENT VARIABLES"**
-3. Agrega cada variable con su nombre y valor:
+1. Edita la app en Kubero (ícono lápiz ✏️) y abre **Variables de entorno**.
+2. Agrega pares de nombre y valor o importa un archivo `.env`.
+3. Revisa los valores y pulsa **Actualizar**.
+4. Comprueba que el despliegue usa la nueva configuración.
 
-   | Variable | Ejemplo de valor |
-   |---|---|
-   | `DATABASE_URL` | `postgres://usuario:pass@server-postgres:5432/mi_db` |
-   | `JWT_SECRET` | `clave-secreta-larga-y-aleatoria` |
-   | `NODE_ENV` | `production` |
+![Variables de entorno con campos de nombre, valor e importación de archivo](imagenes/app-variables-entorno2.png)
 
-4. Haz clic en **"Save"**. Kubero reiniciará la app automáticamente con las nuevas variables.
-
-![Sección de variables de entorno con ejemplos configurados](imagenes/21-env-variables.png)
-
-> **Nunca subas contraseñas o claves secretas a Git.** Usa siempre las variables de entorno de Kubero para pasar información sensible.
+::: warning Configuración sensible
+No publiques contraseñas ni claves en Git o en las variables del frontend que se incorporan al navegador. Los valores de conexión de estas guías son ejemplos; reemplázalos con los datos del proyecto.
+:::

@@ -4,11 +4,16 @@
 
 1. Abre tu navegador y ve a **`https://kubero.inf.uct.cl`**
 2. Inicia sesión con las credenciales proporcionadas por el profesor.
-3. Verás el dashboard principal con todos tus pipelines.
+3. Verás **Pipelines**, con los proyectos a los que tus equipos y permisos te dan acceso.
+4. Usa la búsqueda y los filtros **Equipo**, **Fases activas** y **Origen** para encontrar el proyecto. Limpia los filtros si la lista parece vacía.
 
-![Pantalla de login de Kubero](imagenes/01-login.png)
+![Formulario actual de inicio de sesión de Kubero UCT](imagenes/login-actual.png)
 
-![Dashboard principal con pipelines](imagenes/02-dashboard.png)
+![Lista actual de pipelines con filtros de equipos, fases y origen](imagenes/pipelines-actual.png)
+
+::: warning Antes de crear el proyecto
+El profesor debe agregarte al equipo de tu grupo o trabajo individual. Si no aparece en el selector de acceso del pipeline, consulta al profesor. Revisa [Gestión de equipos](gestion-de-equipos.md).
+:::
 
 ---
 
@@ -67,7 +72,7 @@ Después de hacer `git push`, GitHub Actions construirá y publicará la imagen 
 
 ### Último paso — Hacer pública la imagen
 
-Por defecto las imágenes en ghcr.io son privadas. Kubero no puede descargarlas si son privadas.
+En el flujo de estas guías, las imágenes en ghcr.io deben ser públicas para que el clúster pueda descargarlas sin credenciales adicionales. Publicar el repositorio no hace pública automáticamente su imagen.
 
 1. Ve a `https://github.com/TU-USUARIO?tab=packages`
 2. Haz clic en el nombre de la imagen

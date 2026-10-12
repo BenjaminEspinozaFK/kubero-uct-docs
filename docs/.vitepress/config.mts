@@ -26,7 +26,7 @@ export default defineConfig({
 
     sidebar: [
       {
-        text: 'Plataforma Kubero UCT',
+        text: 'Estudiantes',
         items: [
           { text: 'Introducción', link: '/introduccion' },
           { text: 'Primeros Pasos', link: '/primeros-pasos' },
@@ -34,9 +34,30 @@ export default defineConfig({
           { text: 'Autodeploy', link: '/autodeploy' },
           { text: 'Base de Datos y Variables', link: '/base-de-datos' },
           { text: 'Routing y Monitoreo', link: '/routing-y-monitoreo' },
-          { text: 'Gestión de Usuarios', link: '/profesores' },
         ]
-      }
+      },
+      {
+        text: 'Profesores',
+        items: [
+          { text: 'Gestión de Usuarios', link: '/profesores' },
+          { text: 'Gestión de Equipos', link: '/gestion-de-equipos' },
+        ],
+      },
+      {
+        text: 'Extras',
+        items: [
+          { text: 'Autenticación Básica', link: '/extras/autenticacion-basica' },
+          { text: 'Seguridad', link: '/extras/seguridad' },
+          { text: 'Redes', link: '/extras/redes' },
+          { text: 'CORS', link: '/extras/cors' },
+          { text: 'Kubernetes', link: '/extras/kubernetes' },
+          { text: 'Variables de Entorno', link: '/extras/variables-de-entorno' },
+          { text: 'Recursos', link: '/extras/recursos' },
+          { text: 'Volúmenes', link: '/extras/volumenes' },
+          { text: 'Cronjobs', link: '/extras/cronjobs' },
+          { text: 'Comprobaciones de Estado', link: '/extras/health-checks' },
+        ],
+      },
     ],
 
     socialLinks: [

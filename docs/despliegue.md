@@ -1,84 +1,103 @@
 # Crear Pipeline y App
 
+Prepara la imagen siguiendo [Primeros pasos](primeros-pasos.md) y confirma que perteneces al equipo del proyecto.
+
 ## Crear un Pipeline
 
-Un **Pipeline** agrupa todas las apps de tu proyecto bajo un mismo nombre.
+Un **pipeline** agrupa las aplicaciones de un proyecto y establece qué equipos tienen acceso.
 
 ### Pasos
 
-1. En el dashboard de Kubero, haz clic en el botón **"New Pipeline"**
+1. En **Pipelines**, haz clic en **Nuevo pipeline**.
 
-![Botón New Pipeline en el dashboard de Kubero](imagenes/05-nuevo-pipeline-boton.png)
+![Pipeline encontrado mediante la búsqueda](imagenes/pipeline-filtrado.png)
 
-2. Completa el formulario:
+2. Completa los campos:
 
-   | Campo | Qué ingresar |
-   |---|---|
-   | **Name** | Nombre de tu proyecto, sin espacios (ej: `taller-web-2024`) |
-   | **Phases** | Selecciona `production` |
+| Campo | Qué ingresar |
+|---|---|
+| **Nombre** | Identificador del proyecto, por ejemplo `taller-web-2024`. |
+| **Acceso de equipo** | El equipo de tu grupo o trabajo individual creado por el profesor. |
+| **Dominio (FQDN)** | Dominio base habilitado para el curso, cuando corresponda. |
+| **Fases** | Activa **Production** y selecciona el contexto de clúster ofrecido para esa fase. |
 
-3. Haz clic en **"Create Pipeline"**
+![Formulario actual de pipeline con acceso de equipo, dominio y fases](imagenes/pipeline-formulario-actual.png)
 
-![Formulario de creación de pipeline con nombre y fase completados](imagenes/06-nuevo-pipeline-formulario.png)
+::: warning Importante
+Selecciona al menos el equipo del proyecto. El equipo debe existir y tener sus miembros asignados; escribir un nombre no incorpora personas automáticamente. La captura muestra la disposición del formulario antes de completar todos los campos.
+:::
 
-4. El pipeline aparece en el dashboard. Haz clic en él para entrar.
+3. Haz clic en **Crear pipeline**.
+4. Busca el pipeline creado y ábrelo.
 
-![Pipeline recién creado visible en el dashboard](imagenes/07-pipeline-creado-vacio.png)
+![Pipeline encontrado mediante la búsqueda](imagenes/pipeline-filtrado.png)
 
----
 
 ## Crear una App y hacer tu primer despliegue
 
 ### Paso 1 — Agregar una App al Pipeline
 
-Dentro de tu pipeline, haz clic en **"Add App"** en la fase `production`.
+Dentro del pipeline, pulsa **Nueva app** en la fase `production`. Configura frontend y backend como aplicaciones independientes.
 
-![Fase production con botón Add App](imagenes/08-add-app-boton.png)
+![Vista de aplicaciones de un pipeline vacío](imagenes/pipeline-aplicaciones-vacio.png)
 
 ### Paso 2 — Configurar la App
 
-**Sección superior (información básica):**
-
 | Campo | Descripción | Ejemplo |
 |---|---|---|
-| **App Name** | Nombre del servicio. Solo letras minúsculas y guiones. | `frontend` o `backend` |
-| **Domain** | Subdominio donde estará accesible tu app | `mi-app.inf.uct.cl` |
-| **Container Port** | Puerto donde escucha tu app dentro del contenedor | `80` (frontend), `8000` (backend) |
+| **Nombre de la app** | Identificador del servicio; usa un nombre sencillo en minúsculas. | `frontend` |
+| **Puerto del contenedor** | Puerto real del proceso dentro de la imagen. | `80` para Nginx; `3000` para un backend que escucha allí. |
+| **Dominio** | Subdominio donde estará accesible tu app | `mi-app.inf.uct.cl` |
+| **SSL** | Actívalo para configurar HTTPS en ese dominio. | Activado para una app pública del curso. |
+
+![Formulario actual con nombre, puerto, dominio y SSL](imagenes/app-formulario-actual.png)
 
 > **Sobre el dominio:** Debe ser único en la plataforma. Si `mi-app.inf.uct.cl` ya está en uso, elige algo diferente como `taller2024.inf.uct.cl`. Cualquier subdominio de `*.inf.uct.cl` es válido.
 
-![Formulario de app con App Name, Domain y Container Port completados](imagenes/09-app-formulario-basico.png)
+**Añadir dominio** incorpora otros hosts a la misma app. Para un servicio interno, deja los dominios vacíos y consulta [Base de datos y variables](base-de-datos.md#app-interna-sin-exposicion-publica-imagen-custom).
 
-**Sección DEPLOYMENT:**
+En **Despliegue**, completa directamente la imagen y la etiqueta.
 
-Aquí se define cómo Kubero descarga y ejecuta tu app.
-
-1. En el selector de estrategia, elige **"Container Image"**
-2. Completa los campos que aparecen:
-
-   | Campo | Valor |
-   |---|---|
-   | **Container Image** | `ghcr.io/tu-usuario/nombre-imagen` (sin el tag) |
-   | **Tag** | `latest` |
+| Campo | Valor de ejemplo |
+|---|---|
+| **Imagen del contenedor** | `ghcr.io/tu-usuario/nombre-imagen`, sin la etiqueta. |
+| **Etiqueta (Tag)** | `latest` o la versión que publicaste. |
 
 > El nombre exacto de la imagen lo encuentras en `https://github.com/TU-USUARIO?tab=packages`. Copia el nombre tal como aparece.
 
-![Sección DEPLOYMENT con estrategia Container Image y campos de imagen completados](imagenes/10-app-formulario-deployment.png)
+![Sección de despliegue con imagen y etiqueta](imagenes/app-imagen-contenedor.png)
+
+El **Comando** aparece al tener la configuración avanzada activada; conserva el comando original de la imagen si no necesitas reemplazarlo.
 
 ### Paso 3 — Guardar y esperar
 
-1. Haz clic en **"Create App"** o **"Save"**
-2. La app aparece en el pipeline con un hexágono gris y sin información de pod (descargando la imagen)
-3. En 1-2 minutos aparecerá el nombre del pod junto con valores de **CPU** y **Memory** — eso indica que la app está corriendo correctamente
+1. Pulsa **Crear app** al crearla o **Actualizar** al editarla.
+2. Vuelve a la tabla del pipeline. Mientras se prepara el despliegue puede mostrar **Métricas no disponibles**.
+3. En 1-2 minutos aparecerá el nombre del pod junto con valores de **CPU** y **Memory** eso indica que la app está corriendo correctamente. Si faltan datos, revisa también **Resumen**, **Registros** y **Eventos** dentro de la app: una métrica ausente no demuestra por sí sola que la app esté detenida.
 
-![App recién creada en estado iniciando](imagenes/11-app-iniciando.png)
+![Aplicación recién creada sin métricas disponibles](imagenes/app-iniciando-actual.png)
 
-![App corriendo con pod, CPU y Memory visibles](imagenes/12-app-running.png)
+![Aplicaciones con pod, CPU y memoria](imagenes/app-recursos-actual.png)
+
+El tiempo de inicio depende de la imagen, sus recursos y el clúster. Si no arranca, consulta [Errores comunes](routing-y-monitoreo.md#errores-comunes-y-como-resolverlos).
 
 ### Paso 4 — Acceder a tu App
 
-Tu app está disponible en la URL que pusiste en el campo Domain:
+Tu app está disponible en la URL con el dominio configurado. Por ejemplo:
 
-```
+~~~text
 https://mi-app.inf.uct.cl
-```
+~~~
+
+Comprueba que responde y que el puerto coincide con el de la imagen.
+
+## Configuración adicional
+
+Activa **Configuración avanzada de la aplicación** cuando necesites sus controles adicionales. Cada tema tiene una guía en **Extras**:
+
+- [Autenticación básica](extras/autenticacion-basica.md) y [Seguridad](extras/seguridad.md).
+- [Redes](extras/redes.md), [CORS](extras/cors.md) y [Kubernetes](extras/kubernetes.md).
+- [Variables de entorno](extras/variables-de-entorno.md), [Recursos](extras/recursos.md) y [Volúmenes](extras/volumenes.md).
+- [Cronjobs](extras/cronjobs.md) y [Comprobaciones de estado](extras/health-checks.md).
+
+Sigue primero el recorrido básico y configura solo las secciones necesarias para tu aplicación.

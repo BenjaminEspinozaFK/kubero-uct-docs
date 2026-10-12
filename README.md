@@ -43,6 +43,10 @@ npm run docs:preview
 
 ## Guías disponibles
 
+El menú contiene tres secciones abiertas por defecto y **18 páginas de contenido**. Las guías conservan los perfiles **Profesor** y **Estudiante** del curso.
+
+### Estudiantes
+
 | Guía | Contenido |
 | --- | --- |
 | [Introducción](docs/introduccion.md) | Conceptos de la plataforma, flujo de despliegue y roles. |
@@ -51,7 +55,30 @@ npm run docs:preview
 | [Autodeploy](docs/autodeploy.md) | Automatización de redespliegues con GitHub Actions. |
 | [Base de datos y variables](docs/base-de-datos.md) | PostgreSQL, servicios internos y variables de entorno. |
 | [Routing y monitoreo](docs/routing-y-monitoreo.md) | Conexión entre servicios, logs y resolución de errores. |
-| [Gestión de usuarios](docs/profesores.md) | Administración de estudiantes y proyectos para profesores. |
+
+### Profesores
+
+| Guía | Contenido |
+| --- | --- |
+| [Gestión de usuarios](docs/profesores.md) | Cuentas, filtros, permisos y membresías de estudiantes. |
+| [Gestión de equipos](docs/gestion-de-equipos.md) | Organización por ramo y grupo/estudiante, membresías y acceso del pipeline. |
+
+Los profesores deben asignarse **manualmente** los equipos del curso editando su propia cuenta docente. Crear un equipo no agrega al creador. Los nombres siguen `nombre del ramo - grupo_x` o `nombre del ramo - estudiante_x`.
+
+### Extras
+
+| Guía | Contenido |
+| --- | --- |
+| [Autenticación básica](docs/extras/autenticacion-basica.md) | Activación, realm y cuentas de acceso HTTP. |
+| [Seguridad](docs/extras/seguridad.md) | Escritura, identidad, privilegios y capacidades del contenedor. |
+| [Redes](docs/extras/redes.md) | Listas de acceso, SSL, buffer, ingress y anotaciones. |
+| [CORS](docs/extras/cors.md) | Orígenes, métodos, encabezados y credenciales. |
+| [Kubernetes](docs/extras/kubernetes.md) | Anotaciones de Service Account e integraciones. |
+| [Variables de entorno](docs/extras/variables-de-entorno.md) | Valores ocultos, importación `.env` y conflictos. |
+| [Recursos](docs/extras/recursos.md) | Perfiles CPU/memoria, réplicas y autoescalado. |
+| [Volúmenes](docs/extras/volumenes.md) | Almacenamiento persistente, montaje y modos de acceso. |
+| [Cronjobs](docs/extras/cronjobs.md) | Tareas programadas con imagen y comando. |
+| [Comprobaciones de estado](docs/extras/health-checks.md) | Activación, ruta HTTP y tiempos. |
 
 ## Estructura
 
@@ -67,6 +94,7 @@ npm run docs:preview
 │   │       ├── style.css         # Tokens y estilos base
 │   │       └── institutional.css # Presentación institucional UCT
 │   ├── imagenes/                # Capturas utilizadas en las guías
+│   ├── extras/                  # Diez guías de configuración adicional
 │   ├── public/                  # Activos estáticos, incluido el logotipo
 │   └── *.md                     # Portada y artículos
 ├── DESIGN.md                    # Sistema de diseño de la documentación
@@ -83,6 +111,10 @@ npm run docs:preview
 5. Ejecuta `npm run docs:build` para comprobar enlaces y generación del sitio antes de publicar.
 
 El tema sigue la identidad visual de Kubero UCT descrita en [DESIGN.md](DESIGN.md). Mantén los colores y estilos compartidos en los archivos del tema. Las tablas tienen un contenedor con desplazamiento horizontal para pantallas pequeñas; el código adapta el fondo y el resaltado al tema seleccionado.
+
+Para actualizar una guía, contrasta los controles con el código y la interfaz de Kubero. Guarda las capturas pertinentes en `docs/imagenes/` con nombres descriptivos. Las capturas nuevas de formularios deben excluir contraseñas y tokens; utiliza formularios sin guardar para ilustrar equipos y membresías.
+
+La referencia local de Kubero puede ejecutarse en `http://localhost:2000`, pero las instrucciones de acceso conservan la URL institucional. No incorpores las credenciales de esa instancia a las guías. Antes de cerrar una actualización, comprueba las 18 páginas, sus enlaces e imágenes, la búsqueda, el menú y las vistas móvil/escritorio en ambos temas.
 
 ## Publicación
 

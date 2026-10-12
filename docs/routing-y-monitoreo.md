@@ -27,53 +27,46 @@ Ambas apps quedan accesibles con HTTPS automático desde sus respectivos dominio
 
 ### Paso 2 — Configurar la URL del backend en el frontend
 
-En tu código del frontend, usa una variable de entorno para definir la URL base del backend:
+Para un frontend construido con Vite:
 
-```env
+~~~env
 VITE_API_URL=https://api-mi-proyecto.inf.uct.cl
-```
+~~~
 
-Agrega esta variable en Kubero dentro de la app `frontend` (sección **ENVIRONMENT VARIABLES**).
+Las variables `VITE_*` se incorporan durante la **construcción** del frontend. Si tu imagen sirve archivos estáticos, agregarlas únicamente al contenedor en ejecución no cambia esos archivos: incorpora el valor al build y publica una nueva imagen, o usa la configuración de runtime que implemente tu proyecto. Consulta [Variables de entorno en Vite](https://vite.dev/guide/env-and-mode.html).
 
-En el código del frontend, úsala así (ejemplo con Vite + React):
-
-```javascript
+~~~javascript
 const API_URL = import.meta.env.VITE_API_URL
 
-// Ejemplo de llamada
-const response = await fetch(`${API_URL}/users/login`, {
+const response = await fetch(API_URL + '/users/login', {
   method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ email, password })
 })
-```
+~~~
 
 > **¿Por qué no usar nginx como proxy (`/api/`)?**
 > Hacer que `/api/` redirija al backend en el mismo dominio requiere modificar el Ingress de Kubernetes, lo cual no se puede hacer desde la UI de Kubero. La solución de dominios separados funciona completamente desde la interfaz sin tocar el cluster.
 
----
 
 ## Monitorear tu Despliegue
 
-### Estado de la App (hexágono en Kubero)
+### Estado de la App
 
-El hexágono de cada app en el pipeline indica su estado:
 
-| Estado | Significado |
-|---|---|
-| Gris / vacío | La app está iniciando o la imagen se está descargando |
-| Verde | La app está corriendo correctamente |
-| Rojo / amarillo | Hubo un error. Revisa los logs |
+![Tabla actual de aplicaciones, despliegue y recursos](imagenes/app-recursos-actual.png)
 
-> La vista del pipeline con las apps corriendo se ve igual a la imagen anterior (sección "Verificar que tu App está Corriendo").
-
+Revisa pod, CPU y memoria cuando estén disponibles. **Métricas no disponibles** puede indicar que aún no hay mediciones; verifica **Resumen** y **Eventos** antes de concluir que el servicio está detenido.
 ### Ver Logs en Tiempo Real
 
-Los logs muestran la salida de tu aplicación y son la principal herramienta para diagnosticar errores.
+1. Abre la aplicación desde la tabla del pipeline.
+2. Selecciona **Registros**.
+3. Usa **Abrir registros** si aparece ese botón.
+4. Elige el origen disponible: **Run** para la app o **Addons** para sus complementos.
 
-1. Haz clic en el ícono del reloj ⏱ (o "Logs") en tu app
-2. Verás la salida de tu aplicación en tiempo real
+![Pestaña actual de registros con vista Run y Addons](imagenes/app-registros-actual.png)
 
-![Logs de la aplicación en tiempo real en Kubero](imagenes/22-logs-kubero.png)
+Los registros ayudan a diagnosticar inicio, conexión y fallos de la aplicación.
 
 ### Errores comunes y cómo resolverlos
 

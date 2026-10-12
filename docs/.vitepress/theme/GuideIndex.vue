@@ -7,7 +7,9 @@ const guides = [
   { title: 'Autodeploy', description: 'Conecta GitHub Actions con Kubero para automatizar los despliegues.', link: '/autodeploy' },
   { title: 'Base de datos y variables', description: 'Agrega PostgreSQL y configura las variables de tu aplicación.', link: '/base-de-datos' },
   { title: 'Routing y monitoreo', description: 'Consulta la configuración de red y los logs de tu aplicación.', link: '/routing-y-monitoreo' },
-  { title: 'Gestión de usuarios', description: 'Consulta la guía de administración para profesores.', link: '/profesores' }
+  { title: 'Gestión de usuarios', description: 'Consulta la guía de administración para profesores.', link: '/profesores' },
+  { title: 'Gestión de equipos', description: 'Organiza el curso y asigna estudiantes y profesores a sus equipos.', link: '/gestion-de-equipos' },
+  { title: 'Extras: configuración de aplicaciones', description: 'Consulta autenticación, seguridad, redes, CORS, Kubernetes, variables, recursos, volúmenes, cronjobs y comprobaciones de estado.', link: '/extras/autenticacion-basica' }
 ]
 </script>
 
@@ -15,7 +17,7 @@ const guides = [
   <section class="guide-index" aria-labelledby="guide-title">
     <div class="guide-index__intro">
       <h2 id="guide-title">Del repositorio al despliegue</h2>
-      <p>Consulta las guías según la etapa de tu proyecto.</p>
+      <p>Consulta Estudiantes para desplegar, Profesores para gestionar el curso y Extras para configurar las aplicaciones.</p>
       <a :href="withBase('/introduccion.html')" class="guide-index__concepts">Conocer los conceptos de Kubero <span aria-hidden="true">→</span></a>
     </div>
     <ul class="guide-index__list">
@@ -30,8 +32,8 @@ const guides = [
   <section class="platform-notes" aria-labelledby="platform-title">
     <h2 id="platform-title">La plataforma se encarga de la infraestructura</h2>
     <dl>
-      <div><dt>HTTPS automático</dt><dd>Todas las apps reciben un subdominio propio con certificado SSL sin ninguna configuración adicional.</dd></div>
-      <div><dt>Base de datos incluida</dt><dd>Agrega PostgreSQL con un clic desde la interfaz de Kubero — sin instalar nada ni gestionar servidores.</dd></div>
+      <div><dt>Dominios y HTTPS</dt><dd>Configura el dominio de tu aplicación y activa SSL para publicar su acceso mediante HTTPS.</dd></div>
+      <div><dt>Base de datos</dt><dd>Configura PostgreSQL desde los complementos de la aplicación y conecta tu backend mediante su servicio interno.</dd></div>
       <div><dt>Logs en tiempo real</dt><dd>Visualiza la salida de tu aplicación en vivo desde el dashboard para diagnosticar errores rápidamente.</dd></div>
     </dl>
   </section>

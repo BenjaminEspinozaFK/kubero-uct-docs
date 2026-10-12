@@ -38,7 +38,7 @@ Una imagen Docker es inmutable: si cambias el código y quieres ver los cambios,
 - **Servidor de archivos estáticos:** sirve los archivos HTML, CSS y JavaScript del frontend.
 - **Proxy inverso:** redirige peticiones HTTP hacia otro servicio. Por ejemplo, puede recibir una petición en `/api/login` y reenviarla internamente al servidor backend.
 
-En aplicaciones con frontend (React, Vue, etc.) y backend separados, el nginx del frontend suele estar configurado para enviar las llamadas a `/api/` al backend automáticamente.
+Un proxy `/api/` en el frontend necesita una configuración explícita en la imagen de Nginx. Para comenzar con servicios separados, consulta [Routing y monitoreo](routing-y-monitoreo.md).
 
 ### Addon
 Un **Addon** en Kubero es un servicio complementario que la plataforma puede crear y gestionar automáticamente, como una base de datos PostgreSQL. El addon queda disponible solo dentro del cluster (no expuesto a internet) y se conecta a tu app mediante un nombre de servicio interno.
@@ -65,10 +65,11 @@ Tu computador              GitHub Actions              Kubero (UCT)
 
 1. Haces `git push` a tu repositorio en GitHub.
 2. GitHub Actions construye automáticamente la imagen Docker y la sube a `ghcr.io`.
-3. Kubero descarga esa imagen y la despliega en el cluster.
-4. Tu app queda disponible en una URL pública con HTTPS automático.
+3. Solicitas el despliegue en Kubero o lo automatizas con el workflow de [Autodeploy](autodeploy.md).
+4. Kubero descarga la imagen y la app queda disponible en el dominio configurado; activa SSL para HTTPS.
 
 > **Importante:** Kubero en la UCT usa la estrategia **Container Image** (imagen pre-construida). El build de la imagen ocurre en GitHub Actions, no en Kubero directamente. Esto significa que para ver cambios en producción debes primero hacer push y esperar que GitHub Actions construya la nueva imagen.
+
 
 ---
 
@@ -76,7 +77,26 @@ Tu computador              GitHub Actions              Kubero (UCT)
 
 | Rol | Quién | Qué puede hacer |
 |---|---|---|
-| **Profesor** | Docente | Crea cuentas de estudiantes, crea pipelines, gestiona proyectos de cursos |
-| **Estudiante** | Alumno | Crea pipelines propios, conecta repositorios, despliega apps, ve logs |
+| **Profesor** | Docente | Crea cuentas, organiza equipos y acompaña los proyectos del curso, según sus permisos |
+| **Estudiante** | Alumno | Despliega aplicaciones y consulta sus proyectos y registros, según los permisos y equipos asignados |
 
-> Tanto profesores como estudiantes pueden crear Pipelines y desplegar aplicaciones en Kubero.
+
+## Equipos y acceso a proyectos
+
+Un **equipo** agrupa a las personas que comparten un proyecto. El profesor crea el equipo, agrega a sus estudiantes y se asigna también como miembro. El pipeline debe incluir ese equipo en **Acceso de equipo**.
+
+Considera que:
+
+- Los estudiantes ven los pipelines compartidos con sus equipos.
+- Debes seleccionar el equipo del proyecto al crear el pipeline.
+- Usar el equipo especial `everyone` puede compartir el proyecto con todos sus miembros, fuera de tu grupo.
+
+
+Consulta [Gestión de equipos](gestion-de-equipos.md) y [Crear pipeline y app](despliegue.md).
+
+## Cómo está organizada la documentación
+
+- **Estudiantes:** desde el acceso y la construcción de imágenes hasta el despliegue y monitoreo.
+- **Profesores:** gestión de usuarios y equipos.
+- **Extras:** explicación independiente de cada sección de configuración de apps. Empieza por [Autenticación básica](extras/autenticacion-basica.md) y elige el tema en el menú.
+

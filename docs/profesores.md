@@ -7,18 +7,18 @@ Esta guía describe cómo el **Profesor** incorpora estudiantes, asigna equipos 
 1. Accede a [Kubero UCT](https://kubero.inf.uct.cl) con tu cuenta de Profesor.
 2. Abre **Cuentas → Usuarios** (**Accounts → Users**).
 3. Pulsa **Crear usuario** (**Create User**).
-![Lista actual de usuarios y filtros por rol, equipo y estado](imagenes/usuarios-listado-actual.png)
+   ![Lista actual de usuarios y filtros por rol, equipo y estado](imagenes/usuarios-listado-actual.png)
 4. Completa el formulario y selecciona los equipos del estudiante.
 
-| Campo | Qué ingresar |
-|---|---|
-| Nombre de usuario | Identificador de acceso, por ejemplo `jperez`. |
-| Nombre y apellido | Datos del estudiante. |
-| Correo | Correo del estudiante. |
-| Contraseña | Contraseña inicial; el formulario permite mostrarla o generar una. |
-| Activo | Habilita o deshabilita la cuenta. |
-| Rol | Selección correspondiente al perfil **Estudiante**. |
-| Equipos | Uno o más equipos a los que tendrá acceso; créalos previamente si no aparecen. |
+| Campo             | Qué ingresar                                                                                                                            |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Nombre de usuario | Identificador de acceso, por ejemplo `jperez`.                                                                                          |
+| Nombre y apellido | Datos del estudiante.                                                                                                                   |
+| Correo            | Correo del estudiante.                                                                                                                  |
+| Contraseña        | Contraseña inicial; el formulario permite mostrarla o generar una.                                                                      |
+| Activo            | Habilita o deshabilita la cuenta.                                                                                                       |
+| Rol               | La lista solo muestra roles que no superan el propio — como Profesor, se puede asignar Profesor o Estudiante, nunca Webmaster ni Admin. |
+| Equipos           | Obligatorio. Uno o más equipos propios; si se deja vacío, el formulario no permite guardar.                                             |
 
 ![Formulario actual de creación de usuario con la contraseña vacía](imagenes/usuario-crear.png)
 
@@ -34,21 +34,19 @@ Usa el buscador y los filtros de **Rol**, **Equipo** y **Estado** para localizar
 
 ![Formulario de edición de usuario con selección de equipos](imagenes/usuario-asignar-equipos.png)
 
-::: warning Importante
-El Profesor debe incorporarse **manualmente** a los equipos que necesita supervisar, editando su propia cuenta.
-:::
+Al crear un equipo, el Profesor queda agregado automáticamente como miembro — ya no es necesario editar la propia cuenta para sumarse.
 
 Las cuentas reservadas `admin` y `system` tienen **Editar** deshabilitado en la interfaz actual. Realiza el procedimiento con una cuenta docente editable; si tu cuenta está bloqueada o no puedes administrar usuarios, solicita al administrador de la plataforma que revise la configuración.
+
+Tampoco es posible ver ni editar cuentas que no compartan un equipo con el Profesor — es el mismo acotamiento que aplica a Usuarios y Equipos.
 
 ## Paso 2 — El estudiante trabaja de forma autónoma
 
 Con la cuenta activa, el equipo asignado y los permisos correspondientes, el Estudiante puede seguir las guías de [Primeros pasos](primeros-pasos.md), [Crear pipeline y app](despliegue.md) y [Autodeploy](autodeploy.md).
 
-
 El profesor **no necesita intervenir** en el proceso de despliegue del estudiante — Kubero está diseñado para que cada usuario gestione sus propios proyectos de forma independiente.
 
 ---
-
 
 ## Paso 3 — Monitorear el trabajo de los estudiantes
 
@@ -62,7 +60,6 @@ El profesor **no necesita intervenir** en el proceso de despliegue del estudiant
 Ser Profesor no implica por sí solo ver todos los pipelines de la instalación. El acceso depende de los equipos y permisos de la cuenta. Consulta [Routing y monitoreo](routing-y-monitoreo.md) para diagnosticar aplicaciones.
 
 > Esto es útil para revisar el estado de los proyectos durante una evaluación o para ayudar a un estudiante a diagnosticar un error sin necesidad de que él comparta su pantalla.
-
 
 ## Paso 4 — Limpiar al finalizar el semestre
 

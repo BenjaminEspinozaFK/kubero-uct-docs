@@ -54,15 +54,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Usar tu usuario en minúsculas
+        id: owner
+        run: echo "lc=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/nombre-de-tu-imagen:latest
+          tags: ghcr.io/${{ steps.owner.outputs.lc }}/nombre-de-tu-imagen:latest
 ```
 
 > Cambia `nombre-de-tu-imagen` por el nombre que quieras darle. Si tu proyecto tiene frontend y backend separados, necesitarás un job por cada uno apuntando al Dockerfile correspondiente.
+>
+> El paso "Usar tu usuario en minúsculas" es necesario porque ghcr.io exige que el nombre de la imagen sea todo en minúsculas — si tu usuario de GitHub tiene mayúsculas (ej. `TuUsuario`), el workflow falla con `repository name must be lowercase` sin este paso.
 
 Después de hacer `git push`, GitHub Actions construirá y publicará la imagen automáticamente. Puedes ver el progreso en la pestaña **"Actions"** de tu repositorio.
 

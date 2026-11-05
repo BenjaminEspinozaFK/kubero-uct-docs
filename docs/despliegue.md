@@ -1,8 +1,81 @@
 # Crear pipeline, apps, base de datos y variables
 
-Sigue este recorrido: crear el pipeline, desplegar el backend, agregar su base de datos y variables, y desplegar el frontend. Luego conecta el frontend con el backend (routing), prueba el proyecto y revisa su monitoreo antes de activar [Autodeploy](autodeploy.md).
+Sigue este recorrido: preparar el repositorio en GitHub, construir y publicar las imágenes, crear el pipeline, desplegar el backend, agregar su base de datos y variables, y desplegar el frontend. Luego conecta el frontend con el backend (routing), prueba el proyecto y revisa su monitoreo antes de activar [Autodeploy](autodeploy.md).
 
-Prepara la imagen siguiendo [Primeros pasos](primeros-pasos.md) y confirma que perteneces al equipo del proyecto.
+Antes de empezar, sigue [Primeros pasos](primeros-pasos.md) para ingresar a Kubero y confirmar que perteneces al equipo del proyecto.
+
+## Preparar tu Repositorio en GitHub
+
+Kubero descarga imágenes desde **GitHub Container Registry (ghcr.io)**. Para que funcione, tu repositorio necesita dos cosas:
+
+1. **Un `Dockerfile`** que describa cómo construir la imagen de tu app
+2. **Un workflow de GitHub Actions** que construya y suba la imagen a `ghcr.io` automáticamente
+
+### Agregar el workflow de GitHub Actions
+
+Crea el archivo `.github/workflows/docker-build.yml` en tu repositorio con este contenido:
+
+```yaml
+name: Docker Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Usar tu usuario en minúsculas
+        id: owner
+        run: echo "lc=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ steps.owner.outputs.lc }}/nombre-de-tu-imagen:latest
+```
+
+> Cambia `nombre-de-tu-imagen` por el nombre que quieras darle. Si tu proyecto tiene frontend y backend separados, necesitarás un job por cada uno apuntando al Dockerfile correspondiente.
+>
+> El paso "Usar tu usuario en minúsculas" es necesario porque ghcr.io exige que el nombre de la imagen sea todo en minúsculas — si tu usuario de GitHub tiene mayúsculas (ej. `TuUsuario`), el workflow falla con `repository name must be lowercase` sin este paso.
+
+Después de hacer `git push`, GitHub Actions construirá y publicará la imagen automáticamente. Puedes ver el progreso en la pestaña **"Actions"** de tu repositorio.
+
+![Workflow de GitHub Actions completado exitosamente](imagenes/03-actions-workflow-exitoso.png)
+
+---
+
+### Último paso — Hacer pública la imagen
+
+En el flujo de estas guías, las imágenes en ghcr.io deben ser públicas para que el clúster pueda descargarlas sin credenciales adicionales. Publicar el repositorio no hace pública automáticamente su imagen.
+
+1. Ve a `https://github.com/TU-USUARIO?tab=packages`
+2. Haz clic en el nombre de la imagen
+3. Ve a **"Package settings"** (esquina inferior derecha)
+4. En la sección "Danger Zone", haz clic en **"Change visibility"** → **"Public"**
+5. Repite para cada imagen del proyecto (frontend, backend, etc.)
+
+![Package settings con opción de cambiar visibilidad a pública](imagenes/04-package-settings-visibilidad.png)
+
+Con las imágenes publicadas y accesibles, continúa con la creación del pipeline. Como en la demo, primero prepara las imágenes y después configura las apps en Kubero.
 
 ## Crear un Pipeline
 
@@ -264,7 +337,7 @@ Los registros ayudan a diagnosticar inicio, conexión y fallos de la aplicación
 
 Cuando el proyecto funcione con despliegues manuales y hayas comprobado sus registros, continúa con [Autodeploy](autodeploy.md). Las secciones siguientes cubren servicios internos y configuración adicional si tu proyecto los necesita.
 
-## (EXTRA) App Interna sin Exposición Pública (Imagen Custom)
+## (EXTRA) App Interna sin Exposición Pública (Imagen Custom) {#app-interna-sin-exposicion-publica-imagen-custom}
 
 Puedes desplegar una imagen personalizada como app interna, por ejemplo una base de datos con extensiones que el complemento disponible no incluya.
 

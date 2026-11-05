@@ -50,8 +50,8 @@ El menú contiene tres secciones abiertas por defecto y **15 guías de contenido
 | Guía | Contenido |
 | --- | --- |
 | [Introducción](docs/introduccion.md) | Conceptos de la plataforma, flujo de despliegue y roles. |
-| [Primeros pasos](docs/primeros-pasos.md) | Acceso, preparación del repositorio y construcción de imágenes. |
-| [Crear pipeline, apps, base de datos y variables](docs/despliegue.md) | Pipeline, backend, PostgreSQL, variables, frontend, routing, monitoreo y servicios internos. |
+| [Primeros pasos](docs/primeros-pasos.md) | Acceso a Kubero, búsqueda de proyectos y equipo asignado. |
+| [Crear pipeline, apps, base de datos y variables](docs/despliegue.md) | Repositorio en GitHub, construcción y publicación de imágenes, pipeline, apps, PostgreSQL, variables, routing y monitoreo. |
 | [Autodeploy](docs/autodeploy.md) | Automatización de redespliegues con GitHub Actions. |
 
 ### Profesores

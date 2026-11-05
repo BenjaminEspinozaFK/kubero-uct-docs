@@ -20,7 +20,7 @@ Un **pipeline** agrupa las aplicaciones de un proyecto y establece qué equipos 
 |---|---|
 | **Nombre** | Identificador del proyecto, por ejemplo `taller-web-2024`. |
 | **Acceso de equipo** | El equipo de tu grupo o trabajo individual creado por el profesor. |
-| **Dominio (FQDN)** | Dominio base habilitado para el curso, cuando corresponda. |
+| **Dominio (FQDN)** | Ingresa `inf.uct.cl`. |
 | **Fases** | Activa **Production** y selecciona el contexto de clúster ofrecido para esa fase. |
 
 ![Formulario actual de pipeline con acceso de equipo, dominio y fases](imagenes/pipeline-formulario-actual.png)
@@ -99,9 +99,9 @@ Los **Complementos** permiten incorporar servicios como PostgreSQL a tu aplicaci
 
 ### Cómo agregar el Addon
 
-1. Abre la app que necesita la base de datos y pulsa el lápiz para editarla.
+1. Abre la app que necesita la base de datos (ej: server) y pulsa el lápiz para editarla.
 
-![Aplicación recién creada sin métricas disponibles](imagenes/app-iniciando-actual.png)
+![Aplicación recién creada sin métricas disponibles](imagenes/app-recursos-actual.png)
 
 2. Busca **Complementos** y pulsa **Add Addon** o el botón **+**.
 3. Selecciona **PostgreSQL** y completa el formulario ofrecido por la plantilla.
@@ -264,7 +264,7 @@ Los registros ayudan a diagnosticar inicio, conexión y fallos de la aplicación
 
 Cuando el proyecto funcione con despliegues manuales y hayas comprobado sus registros, continúa con [Autodeploy](autodeploy.md). Las secciones siguientes cubren servicios internos y configuración adicional si tu proyecto los necesita.
 
-## App Interna sin Exposición Pública (Imagen Custom)
+## (EXTRA) App Interna sin Exposición Pública (Imagen Custom)
 
 Puedes desplegar una imagen personalizada como app interna, por ejemplo una base de datos con extensiones que el complemento disponible no incluya.
 

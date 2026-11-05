@@ -12,7 +12,7 @@
 ![Lista actual de pipelines con filtros de equipos, fases y origen](imagenes/pipelines-actual.png)
 
 ::: warning Antes de crear el proyecto
-El profesor debe agregarte al equipo de tu grupo o trabajo individual. Si no aparece en el selector de acceso del pipeline, consulta al profesor. Revisa [Gestión de equipos](gestion-de-equipos.md).
+El profesor debe agregarte al equipo de tu grupo o trabajo individual. Si no aparece en el selector de acceso del pipeline, consulta al profesor. Revisa [Gestión de equipos y usuarios](profesores.md).
 :::
 
 ---

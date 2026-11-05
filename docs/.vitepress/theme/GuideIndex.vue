@@ -3,12 +3,9 @@ import { withBase } from 'vitepress'
 
 const guides = [
   { title: 'Primeros pasos', description: 'Prepara tu repositorio y el flujo de construcción de imágenes.', link: '/primeros-pasos' },
-  { title: 'Crear pipeline y app', description: 'Configura tu proyecto y despliega tu primera aplicación.', link: '/despliegue' },
+  { title: 'Crear pipeline, apps, base de datos, variables, routing y monitoreo', description: 'Despliega backend y frontend, configura la base de datos y variables, conecta los servicios y revisa sus registros.', link: '/despliegue' },
   { title: 'Autodeploy', description: 'Conecta GitHub Actions con Kubero para automatizar los despliegues.', link: '/autodeploy' },
-  { title: 'Base de datos y variables', description: 'Agrega PostgreSQL y configura las variables de tu aplicación.', link: '/base-de-datos' },
-  { title: 'Routing y monitoreo', description: 'Consulta la configuración de red y los logs de tu aplicación.', link: '/routing-y-monitoreo' },
-  { title: 'Gestión de usuarios', description: 'Consulta la guía de administración para profesores.', link: '/profesores' },
-  { title: 'Gestión de equipos', description: 'Organiza el curso y asigna estudiantes y profesores a sus equipos.', link: '/gestion-de-equipos' },
+  { title: 'Gestión de equipos y usuarios', description: 'Crea los equipos del curso y luego las cuentas con su equipo asignado.', link: '/profesores' },
   { title: 'Extras: configuración de aplicaciones', description: 'Consulta autenticación, seguridad, redes, CORS, Kubernetes, variables, recursos, volúmenes, cronjobs y comprobaciones de estado.', link: '/extras/autenticacion-basica' }
 ]
 </script>

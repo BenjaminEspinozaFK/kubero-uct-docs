@@ -32,4 +32,4 @@ Mantén las contraseñas fuera del repositorio y utiliza HTTPS. Para retirar el 
 
 Esta protección actúa sobre el acceso HTTP del ingress; no sustituye los permisos internos de tu aplicación ni restringe por sí sola el acceso a su servicio dentro del clúster. Requiere un dominio, ingress y controlador compatibles. Si la app ya gestiona su propia autenticación, verifica cómo conviven ambos mecanismos.
 
-Consulta [Redes](redes.md) para el ingress y [Crear pipeline y app](../despliegue.md) para publicar el servicio.
+Consulta [Redes](redes.md) para el ingress y [Crear pipeline, apps, base de datos y variables](../despliegue.md) para publicar el servicio.

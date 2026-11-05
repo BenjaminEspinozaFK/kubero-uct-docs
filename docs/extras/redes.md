@@ -33,4 +33,4 @@ Las opciones específicas de Nginx requieren un controlador que reconozca sus [a
 
 El formulario rechaza claves de anotación que contengan `snippet` y las claves con formato inválido. No uses anotaciones adicionales para duplicar los campos que Kubero ya administra. El efecto depende del controlador y sus políticas; seleccionar una clase no instala ese controlador ni configura DNS.
 
-Para conectar frontend y backend consulta [CORS](cors.md) y [Routing y monitoreo](../routing-y-monitoreo.md).
+Para conectar frontend y backend consulta [CORS](cors.md) y [Routing y monitoreo](../despliegue.md#routing-entre-servicios-frontend-backend).

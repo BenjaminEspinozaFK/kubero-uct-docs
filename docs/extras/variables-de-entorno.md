@@ -39,4 +39,4 @@ DB_NAME=proyecto
 
 El importador omite líneas vacías y comentarios, separa cada par en el primer `=` y retira comillas externas. No ejecuta comandos ni expande referencias a otras variables. Los valores nuevos se incorporan al formulario antes de guardar; cancelar el diálogo de conflictos no equivale a cancelar todos los cambios de la app. El formulario señala nombres duplicados.
 
-Ocultar un valor es una ayuda visual, no un permiso adicional. No publiques archivos con credenciales. En frontends Vite, las variables `VITE_*` se sustituyen en el build y se exponen al cliente; consulta [Vite](https://vite.dev/guide/env-and-mode.html) y [Routing](../routing-y-monitoreo.md).
+Ocultar un valor es una ayuda visual, no un permiso adicional. No publiques archivos con credenciales. En frontends Vite, las variables `VITE_*` se sustituyen en el build y se exponen al cliente; consulta [Vite](https://vite.dev/guide/env-and-mode.html) y [Routing](../despliegue.md#routing-entre-servicios-frontend-backend).

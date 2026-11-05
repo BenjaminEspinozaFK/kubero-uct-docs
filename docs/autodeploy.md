@@ -1,5 +1,7 @@
 # Autodeploy: Redespliegue Automático
 
+Antes de automatizar, completa [el despliegue de apps, base de datos y variables](despliegue.md), incluida la conexión entre servicios y la revisión de [registros y estado de las apps](despliegue.md#monitorear-tu-despliegue). El frontend y el backend deben funcionar con un redespliegue manual.
+
 El **autodeploy** permite que cada vez que un estudiante hace `git push` a su repositorio, Kubero redespliega la aplicación automáticamente con la nueva imagen — sin que nadie tenga que hacer nada manualmente.
 
 El flujo completo es:

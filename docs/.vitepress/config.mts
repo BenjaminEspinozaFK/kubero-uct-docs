@@ -30,17 +30,14 @@ export default defineConfig({
         items: [
           { text: 'Introducción', link: '/introduccion' },
           { text: 'Primeros Pasos', link: '/primeros-pasos' },
-          { text: 'Crear Pipeline y App', link: '/despliegue' },
+          { text: 'Crear pipeline, apps, base de datos, variables, routing y monitoreo', link: '/despliegue' },
           { text: 'Autodeploy', link: '/autodeploy' },
-          { text: 'Base de Datos y Variables', link: '/base-de-datos' },
-          { text: 'Routing y Monitoreo', link: '/routing-y-monitoreo' },
         ]
       },
       {
         text: 'Profesores',
         items: [
-          { text: 'Gestión de Usuarios', link: '/profesores' },
-          { text: 'Gestión de Equipos', link: '/gestion-de-equipos' },
+          { text: 'Gestión de equipos y usuarios', link: '/profesores' },
         ],
       },
       {

@@ -90,4 +90,4 @@ hardening de seguridad activo en todas las Apps.
 
 Las opciones no cambian el usuario ni los permisos de archivos incluidos en la imagen. Una imagen que requiere root o escribir en rutas sin volumen puede fallar con estos ajustes. Los UID/GID aceptan números; las capacidades disponibles se eligen del listado del formulario. Las políticas del clúster también pueden rechazar una configuración.
 
-Estos controles pertenecen al contenedor; no cambian los roles Profesor/Estudiante ni las membresías de [Equipos](../gestion-de-equipos.md).
+Estos controles pertenecen al contenedor; no cambian los roles Profesor/Estudiante ni las membresías de [Gestión de equipos y usuarios](../profesores.md).

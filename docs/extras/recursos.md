@@ -32,4 +32,4 @@ La CPU y memoria se eligen mediante el **perfil de pod**; el formulario actual n
 
 Los controles de réplicas y rangos permiten valores **0–10**; las cuotas y capacidad del clúster pueden imponer límites menores. Cero réplicas web deja la app sin pods web. El autoescalado depende de métricas disponibles; activarlo no garantiza un número fijo de pods.
 
-Agregar réplicas no convierte automáticamente una app en un sistema preparado para compartir sesiones o archivos. Revisa [Volúmenes](volumenes.md) antes de escalar servicios con almacenamiento y [Routing y monitoreo](../routing-y-monitoreo.md) para observar el resultado.
+Agregar réplicas no convierte automáticamente una app en un sistema preparado para compartir sesiones o archivos. Revisa [Volúmenes](volumenes.md) antes de escalar servicios con almacenamiento y [Routing y monitoreo](../despliegue.md#monitorear-tu-despliegue) para observar el resultado.

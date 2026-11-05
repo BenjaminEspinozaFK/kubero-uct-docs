@@ -32,4 +32,4 @@ Ajusta los tiempos si el arranque requiere más margen. La comprobación debe po
 
 Este formulario configura comprobaciones **HTTP**; no presenta controles separados para readiness y liveness ni un selector de comprobación TCP. El operador del clúster aplica la configuración: el formulario no permite establecer por separado todos los parámetros de las probes de Kubernetes.
 
-No actives una ruta HTTP en PostgreSQL u otro servicio que no atienda HTTP. Un puerto incorrecto, una ruta inexistente o un timeout demasiado corto puede hacer fallar las comprobaciones aunque el proceso haya iniciado. Consulta [Routing y monitoreo](../routing-y-monitoreo.md) para diagnosticarlo.
+No actives una ruta HTTP en PostgreSQL u otro servicio que no atienda HTTP. Un puerto incorrecto, una ruta inexistente o un timeout demasiado corto puede hacer fallar las comprobaciones aunque el proceso haya iniciado. Consulta [Routing y monitoreo](../despliegue.md#monitorear-tu-despliegue) para diagnosticarlo.

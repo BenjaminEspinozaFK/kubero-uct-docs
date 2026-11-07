@@ -45,7 +45,7 @@ Una imagen Docker es inmutable: si cambias el código y quieres ver los cambios,
 - **Servidor de archivos estáticos:** sirve los archivos HTML, CSS y JavaScript del frontend.
 - **Proxy inverso:** redirige peticiones HTTP hacia otro servicio. Por ejemplo, puede recibir una petición en `/api/login` y reenviarla internamente al servidor backend.
 
-Un proxy `/api/` en el frontend necesita una configuración explícita en la imagen de Nginx. Para comenzar con servicios separados, consulta [Routing y monitoreo](routing-y-monitoreo.md).
+Un proxy `/api/` en el frontend necesita una configuración explícita en la imagen de Nginx. Para comenzar con servicios separados, consulta [Routing y monitoreo](despliegue.md#routing-entre-servicios-frontend-backend).
 
 ### Addon
 
@@ -103,7 +103,7 @@ Considera que:
 - Debes seleccionar el equipo del proyecto al crear el pipeline.
 - Usar el equipo especial `everyone` puede compartir el proyecto con todos sus miembros, fuera de tu grupo.
 
-Consulta [Gestión de equipos](gestion-de-equipos.md) y [Crear pipeline y app](despliegue.md).
+Consulta [Gestión de equipos y usuarios](profesores.md) y [Crear pipeline, apps, base de datos y variables](despliegue.md).
 
 ## Cómo está organizada la documentación
 

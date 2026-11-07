@@ -34,4 +34,4 @@ Estos campos generan anotaciones de ingress-nginx. Consulta su [documentación d
 
 CORS no autentica usuarios ni reemplaza los permisos del backend. El panel no tiene efecto si el controlador no interpreta las anotaciones. Si el backend también emite encabezados CORS, evita respuestas duplicadas o contradictorias. Una solicitud que funciona desde una terminal aún puede fallar por CORS en el navegador.
 
-Revisa también la URL del backend en [Routing y monitoreo](../routing-y-monitoreo.md).
+Revisa también la URL del backend en [Routing y monitoreo](../despliegue.md#routing-entre-servicios-frontend-backend).

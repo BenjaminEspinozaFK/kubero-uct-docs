@@ -215,6 +215,12 @@ html:not(.dark) .Layout .VPDoc .vp-doc div[class*='language-'] code span[style*=
 .VPLocalSearchBox .result.selected { border-color: var(--vp-c-brand-1); background: var(--vp-c-brand-soft); }
 :where(a, button, input, summary):focus-visible { outline: 3px solid var(--vp-c-brand-1); outline-offset: 2px; }
 @media (min-width: 960px) {
+  /* Start the scrollable menu below the fixed header, with breathing room. */
+  .Layout .VPSidebar {
+    top: calc(var(--vp-layout-top-height, 0px) + var(--vp-nav-height) + 16px);
+    padding-top: 0;
+  }
+  .Layout .VPSidebar .curtain { display: none; }
   .Layout .VPDoc { padding: 32px 24px 48px; }
   .Layout .VPDoc .content { padding: 0; }
 }

@@ -43,27 +43,26 @@ npm run docs:preview
 
 ## Guías disponibles
 
-El menú contiene tres secciones abiertas por defecto y **18 páginas de contenido**. Las guías conservan los perfiles **Profesor** y **Estudiante** del curso.
+El menú contiene tres secciones abiertas por defecto y **15 guías de contenido**. Las guías conservan los perfiles **Profesor** y **Estudiante** del curso.
 
 ### Estudiantes
 
 | Guía | Contenido |
 | --- | --- |
 | [Introducción](docs/introduccion.md) | Conceptos de la plataforma, flujo de despliegue y roles. |
-| [Primeros pasos](docs/primeros-pasos.md) | Acceso, preparación del repositorio y construcción de imágenes. |
-| [Crear pipeline y app](docs/despliegue.md) | Configuración y primer despliegue de una aplicación. |
+| [Primeros pasos](docs/primeros-pasos.md) | Acceso a Kubero, búsqueda de proyectos y equipo asignado. |
+| [Crear pipeline, apps, base de datos y variables](docs/despliegue.md) | Repositorio en GitHub, construcción y publicación de imágenes, pipeline, apps, PostgreSQL, variables, routing y monitoreo. |
 | [Autodeploy](docs/autodeploy.md) | Automatización de redespliegues con GitHub Actions. |
-| [Base de datos y variables](docs/base-de-datos.md) | PostgreSQL, servicios internos y variables de entorno. |
-| [Routing y monitoreo](docs/routing-y-monitoreo.md) | Conexión entre servicios, logs y resolución de errores. |
 
 ### Profesores
 
 | Guía | Contenido |
 | --- | --- |
-| [Gestión de usuarios](docs/profesores.md) | Cuentas, filtros, permisos y membresías de estudiantes. |
-| [Gestión de equipos](docs/gestion-de-equipos.md) | Organización por ramo y grupo/estudiante, membresías y acceso del pipeline. |
+| [Gestión de equipos y usuarios](docs/profesores.md) | Crear equipos, crear usuarios con su equipo asignado y revisar el acceso a los proyectos. |
 
-Los profesores deben asignarse **manualmente** los equipos del curso editando su propia cuenta docente. Crear un equipo no agrega al creador. Los nombres siguen `nombre del ramo - grupo_x` o `nombre del ramo - estudiante_x`.
+El profesor crea primero los equipos y luego los usuarios, seleccionando su equipo en el formulario de creación. Al crear un equipo, el profesor queda agregado automáticamente como miembro. Los nombres siguen `nombre del ramo - grupo_x` o `nombre del ramo - estudiante_x`.
+
+Las rutas anteriores `gestion-de-equipos`, `base-de-datos` y `routing-y-monitoreo` conservan páginas de enlace a las guías unificadas.
 
 ### Extras
 
@@ -114,7 +113,7 @@ El tema sigue la identidad visual de Kubero UCT descrita en [DESIGN.md](DESIGN.m
 
 Para actualizar una guía, contrasta los controles con el código y la interfaz de Kubero. Guarda las capturas pertinentes en `docs/imagenes/` con nombres descriptivos. Las capturas nuevas de formularios deben excluir contraseñas y tokens; utiliza formularios sin guardar para ilustrar equipos y membresías.
 
-La referencia local de Kubero puede ejecutarse en `http://localhost:2000`, pero las instrucciones de acceso conservan la URL institucional. No incorpores las credenciales de esa instancia a las guías. Antes de cerrar una actualización, comprueba las 18 páginas, sus enlaces e imágenes, la búsqueda, el menú y las vistas móvil/escritorio en ambos temas.
+La referencia local de Kubero puede ejecutarse en `http://localhost:2000`, pero las instrucciones de acceso conservan la URL institucional. No incorpores las credenciales de esa instancia a las guías. Antes de cerrar una actualización, comprueba las 15 guías, sus enlaces e imágenes, la búsqueda, el menú y las vistas móvil/escritorio en ambos temas.
 
 ## Publicación
 

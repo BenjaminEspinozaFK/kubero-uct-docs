@@ -38,4 +38,4 @@ Este par es ilustrativo: por sí solo no conecta servicios ni concede acceso a r
 
 El formulario actual muestra **anotaciones de Service Account**; no es un editor de manifiestos, RoleBindings o permisos de Kubernetes. Una anotación solo produce un efecto especial si existe una integración que la interprete. No introduzcas tokens, contraseñas ni claves privadas en estos campos.
 
-Las anotaciones del **ingress** se configuran en [Redes](redes.md). El acceso de Profesor y Estudiante a los pipelines se administra mediante [Equipos](../gestion-de-equipos.md), no mediante este panel.
+Las anotaciones del **ingress** se configuran en [Redes](redes.md). El acceso de Profesor y Estudiante a los pipelines se administra mediante [Gestión de equipos y usuarios](../profesores.md), no mediante este panel.

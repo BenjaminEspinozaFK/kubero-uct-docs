@@ -32,4 +32,4 @@ En **Crear app** o **Editar app**, abre **Volúmenes** (puede aparecer como **Vo
 
 Los valores iniciales de una fila son ejemplos; revisa especialmente clase, ruta y modo. Solo persisten los datos guardados en la ruta montada. La imagen debe admitir esa ruta y los permisos del usuario del contenedor.
 
-Un volumen no es un respaldo. Antes de eliminar una app, confirma cómo se conservan sus volúmenes y las políticas de retención de la instalación. Para bases de datos, utiliza la ruta de datos exigida por la imagen y revisa [Base de datos y variables](../base-de-datos.md).
+Un volumen no es un respaldo. Antes de eliminar una app, confirma cómo se conservan sus volúmenes y las políticas de retención de la instalación. Para bases de datos, utiliza la ruta de datos exigida por la imagen y revisa [Crear pipeline, apps, base de datos y variables](../despliegue.md).

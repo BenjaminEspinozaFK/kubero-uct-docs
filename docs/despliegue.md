@@ -176,7 +176,7 @@ Los **Complementos** permiten incorporar servicios como PostgreSQL a tu aplicaci
 
 ![Aplicación recién creada sin métricas disponibles](imagenes/app-recursos-actual.png)
 
-2. Busca **Complementos** y pulsa **Add Addon** o el botón **+**.
+2. Busca **Complementos** y pulsa **Agregar addon** o el botón **+**.
 3. Selecciona **PostgreSQL** y completa el formulario ofrecido por la plantilla.
 
 ![Complemento PostgreSQL en el formulario actual de la app](imagenes/app-complementos-actual.png)
@@ -191,13 +191,15 @@ Los **Complementos** permiten incorporar servicios como PostgreSQL a tu aplicaci
 | **Additional User Password** | Contraseña de ese usuario | `mi-password-seguro` |
 | **Database Name** | Nombre de la base de datos | `mi_base_de_datos` |
 | **Storage Class** | Tipo de almacenamiento en el cluster | Deja el valor por defecto que aparece en el formulario |
+| **CPU Request** / **CPU Limit** | CPU reservada para la base y máximo que puede usar | `50m` / `500m` |
+| **Memory Request** / **Memory Limit** | Memoria reservada y máximo; si lo supera, la base se reinicia | `128Mi` / `512Mi` |
 
 > **Importante:** En cada campo escribe **solo el valor**, no el nombre de la variable.
 > - ❌ Incorrecto: `POSTGRES_PASSWORD=mi-password-seguro`
 > - ✅ Correcto: `mi-password-seguro`
 
 
-> El formulario muestra los campos vacíos listos para completar. Los valores por defecto (`postgres`, `17.6`, `8Gi`, `ReadWriteOnce`) pueden dejarse como están en la mayoría de los casos. Los campos sensibles como **Postgres Password**, **Additional Username**, **Additional User Password** y **Database Name** deben completarse con los valores específicos de tu proyecto.
+> El formulario muestra los campos vacíos listos para completar. Los valores por defecto (`postgres`, `17.6`, `8Gi`, `ReadWriteOnce` y los de CPU y memoria) pueden dejarse como están en la mayoría de los casos. La CPU y la memoria solo se eligen al crear el complemento; más detalles en [Recursos](extras/recursos.md#recursos-de-los-complementos). Los campos sensibles como **Postgres Password**, **Additional Username**, **Additional User Password** y **Database Name** deben completarse con los valores específicos de tu proyecto.
 
 
 4. Guarda la configuración del complemento y pulsa **Actualizar** en la app.
@@ -205,9 +207,17 @@ Los **Complementos** permiten incorporar servicios como PostgreSQL a tu aplicaci
 
 ### Nombre del servicio de la base de datos
 
-Kubero crea el servicio de PostgreSQL con el nombre: **`[nombre-de-tu-app]-postgres`**
+Con el nombre por defecto (`postgres`), Kubero crea el servicio de PostgreSQL como **`[nombre-de-tu-app]-postgres`**. Por ejemplo, si tu app se llama `server`, el servicio se llama `server-postgres`.
 
-Por ejemplo, si tu app se llama `server`, el servicio de postgres se llama `server-postgres`.
+Si le das otro nombre al addon, el servicio depende de si ese nombre contiene la palabra `postgres`:
+
+| App | Nombre del addon | Servicio (hostname) |
+|---|---|---|
+| `server` | `postgres` (por defecto) | `server-postgres` |
+| `server` | `db2` | `server-db2-postgres` |
+| `server` | `reportes-postgres` | `server-reportes-postgres` |
+
+Kubero muestra el host en la tarjeta del complemento (**Host para conectarse**) y en el formulario al crearlo, así que no hace falta deducirlo.
 
 Este nombre es el **hostname** que debes usar en tu aplicación para conectarte a la base de datos:
 
@@ -242,7 +252,7 @@ Kubero no agrega automáticamente la conexión del complemento a las variables d
 DATABASE_URL=postgres://mi_usuario:CONTRASENA_DEL_PROYECTO@server-postgres:5432/mi_base_de_datos
 ~~~
 
-Reemplaza usuario, contraseña y nombre de base por los del complemento. El host debe coincidir con el nombre real de la app: si se llama `server2`, usa `server2-postgres`. Guarda con **Actualizar** y revisa los registros del backend para confirmar la conexión.
+Reemplaza usuario, contraseña y nombre de base por los del complemento. El host debe coincidir con el que muestra la tarjeta del complemento: con el nombre por defecto y una app llamada `server2`, es `server2-postgres`. Guarda con **Actualizar** y revisa los registros del backend para confirmar la conexión.
 
 ## Crear el frontend
 

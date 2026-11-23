@@ -2,6 +2,22 @@
 
 Esta guía sigue el flujo del Profesor: primero crear los equipos del curso, luego crear cada usuario con su equipo asignado y finalmente revisar el acceso a los proyectos.
 
+## Video tutorial
+
+Sigue el tutorial en video para crear equipos, registrar estudiantes y revisar el acceso a sus proyectos en Kubero.
+
+<iframe
+  src="https://www.youtube-nocookie.com/embed/9i16uh6f9aQ"
+  title="Tutorial de gestión de equipos y usuarios en Kubero para profesores"
+  style="display: block; width: 100%; aspect-ratio: 16 / 9; border: 0;"
+  loading="lazy"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+></iframe>
+
+[Ver el tutorial en YouTube](https://youtu.be/9i16uh6f9aQ).
+
 ## Paso 1 — Crear los equipos del curso
 
 Los equipos organizan el acceso a los pipelines. Una cuenta puede pertenecer a varios equipos y un pipeline puede permitir acceso a varios de ellos.

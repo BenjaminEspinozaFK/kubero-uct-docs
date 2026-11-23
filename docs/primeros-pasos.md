@@ -1,5 +1,21 @@
 # Primeros Pasos
 
+## Video tutorial
+
+Sigue el tutorial en video como apoyo para comenzar con Kubero y desplegar tu proyecto.
+
+<iframe
+  src="https://www.youtube-nocookie.com/embed/omJ3Nt383GE"
+  title="Tutorial de despliegue en Kubero para estudiantes"
+  style="display: block; width: 100%; aspect-ratio: 16 / 9; border: 0;"
+  loading="lazy"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+></iframe>
+
+[Ver el tutorial en YouTube](https://youtu.be/omJ3Nt383GE).
+
 ## Acceder a Kubero
 
 1. Abre tu navegador y ve a **`https://kubero.inf.uct.cl`**

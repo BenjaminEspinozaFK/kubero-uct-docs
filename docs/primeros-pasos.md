@@ -16,6 +16,8 @@ Sigue el tutorial en video como apoyo para comenzar con Kubero y desplegar tu pr
 
 [Ver el tutorial en YouTube](https://youtu.be/omJ3Nt383GE).
 
+Puedes encontrar el código del proyecto utilizado en el tutorial en el [repositorio kubero-demo-todo](https://github.com/BenjaminEspinozaFK/kubero-demo-todo).
+
 ## Acceder a Kubero
 
 1. Abre tu navegador y ve a **`https://kubero.inf.uct.cl`**

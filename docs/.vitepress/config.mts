@@ -53,6 +53,7 @@ export default defineConfig({
           { text: 'Volúmenes', link: '/extras/volumenes' },
           { text: 'Cronjobs', link: '/extras/cronjobs' },
           { text: 'Comprobaciones de Estado', link: '/extras/health-checks' },
+          { text: 'PostgreSQL con TLS', link: '/extras/postgres-tls' },
         ],
       },
     ],

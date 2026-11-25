@@ -227,6 +227,8 @@ postgres://mi_usuario:mi-password@server-postgres:5432/mi_base_de_datos
 
 > La base de datos creada como addon nunca tiene una URL pública. Solo tu backend puede acceder a ella usando el nombre de servicio interno.
 
+> El addon no usa TLS. Si tu backend exige `sslmode=require` o `sslmode=verify-full`, la conexión fallará: usa `sslmode=disable` con el addon o, si tu proyecto necesita cifrar la conexión, sigue [PostgreSQL con TLS](extras/postgres-tls.md).
+
 ## Variables de Entorno
 
 Las variables separan configuración y código. La guía completa está en [Extras → Variables de entorno](extras/variables-de-entorno.md).
@@ -340,7 +342,7 @@ Los registros ayudan a diagnosticar inicio, conexión y fallos de la aplicación
 |---|---|---|
 | `Name does not resolve` | El hostname de la base de datos está mal escrito | Verifica que `POSTGRES_HOST` sea `[tu-app]-postgres` |
 | `password authentication failed` | Las credenciales de la DB no coinciden | Revisa que `POSTGRES_USER` y `POSTGRES_PASSWORD` sean los mismos que configuraste en el addon |
-| `connection refused` | Puerto equivocado o servicio no está corriendo | Verifica el puerto (postgres: `5432`, no `80`) |
+| `connection refused` | Puerto equivocado o servicio no está corriendo | Verifica el puerto: `5432` para el addon (`[tu-app]-postgres`) y `80` para una [app interna](#app-interna-sin-exposicion-publica-imagen-custom) (`[app]-kuberoapp`) |
 | `ImagePullBackOff` | Kubero no puede descargar la imagen | Verifica que la imagen en ghcr.io sea pública |
 | `Read-only file system` al iniciar Nginx | Nginx necesita escribir directorios temporales y la raíz está en modo de solo lectura | Si aparece el error de la demo sobre `/var/cache/nginx/client_temp`, desactiva `readOnlyRootFilesystem` en la [configuración de seguridad](extras/seguridad.md) del frontend y redespliega |
 | `CrashLoopBackOff` | La app inicia y falla repetidamente | Lee los logs para ver el error específico |
@@ -363,60 +365,65 @@ Puedes desplegar una imagen personalizada como app interna, por ejemplo una base
 
 | Campo | Qué hacer |
 |---|---|
-| **Dominio** | Dejarlo vacío; no agregar otros dominios. |
+| **Dominio** | Obligatorio: Kubero no crea apps sin dominio. Usa uno de un solo nivel bajo `inf.uct.cl`, por ejemplo `mi-db-proyecto.inf.uct.cl`. |
 | **Imagen del contenedor** | Imagen del servicio preparada para tu proyecto. |
 | **Etiqueta (Tag)** | Versión compatible con tu aplicación. |
 | **Puerto del contenedor** | Puerto real, por ejemplo `5432` para PostgreSQL. |
 | **Réplicas web** | Habitualmente `1` para un servicio de una sola instancia. |
 
-Configura las variables que requiere esa imagen y, si guarda datos, un volumen en la ruta de datos correcta. **SSL** y las opciones de ingress no sustituyen la ausencia de un dominio público.
+Configura las variables que requiere esa imagen y, si guarda datos, un volumen en la ruta de datos correcta.
+
+El dominio solo atiende HTTP. Un servicio que no habla HTTP, como PostgreSQL o Redis, no queda accesible por ese dominio: las otras apps lo usan por su servicio interno. Si el servicio sí atiende HTTP y no debe usarse desde afuera, protégelo en su propio código o con [Autenticación básica](extras/autenticacion-basica.md).
 
 
 ### Desactivar Health Checks
 
-Los contenedores que no son servidores HTTP (como Postgres o Redis) fallarán los health checks que Kubero activa por defecto. Debes desactivarlos:
+Las comprobaciones de estado de Kubero son HTTP, así que fallan en contenedores que no son servidores HTTP (como Postgres o Redis). Vienen desactivadas al crear la app: déjalas así.
 
-1. En la pantalla de edición de la app, busca la sección **"HEALTH CHECKS"**
-2. Desactivalo
+1. Activa **Configuración avanzada de la aplicación** y abre **Comprobaciones de estado**.
+2. Revisa que el interruptor esté desactivado.
 
-Si no los desactivas, el pod entrará en `CrashLoopBackOff` porque Kubero intentará hacer peticiones HTTP al puerto del contenedor y fallará.
+Si quedan activadas, Kubero reiniciará el contenedor una y otra vez porque sus peticiones HTTP al puerto del contenedor fallan.
 
 ### Cómo conectarse desde otra app
 
-En este flujo se usa el nombre de servicio `[nombre-de-app]-kuberoapp` para una app interna. Confirma el servicio del despliegue y que el backend pueda resolverlo en su namespace.
+Cada app tiene un servicio interno llamado `[nombre-de-app]-kuberoapp`. Ese servicio publica el puerto del contenedor en el **puerto `80`**: aunque PostgreSQL escuche en el `5432` dentro del contenedor, las otras apps se conectan al `80`.
 
 ~~~env
 # Ejemplo: servicio de una app interna llamada mi-db
-DATABASE_URL=postgres://usuario:CONTRASENA_DEL_PROYECTO@mi-db-kuberoapp:5432/mi_base_de_datos
+DATABASE_URL=postgres://usuario:CONTRASENA_DEL_PROYECTO@mi-db-kuberoapp:80/mi_base_de_datos
 ~~~
 
 Registra la conexión en las variables del **backend**, no en el código público del frontend.
 
 ### Ejemplo completo: Apache AGE (Postgres para grafos)
 
-Si tu proyecto necesita una imagen como `apache/age`, comprueba la etiqueta disponible y las instrucciones de esa imagen. Configura un nombre como `age-db`, puerto `5432` y dominio vacío.
+Si tu proyecto necesita una imagen como `apache/age`, comprueba la etiqueta disponible y las instrucciones de esa imagen. Configura un nombre como `age-db`, puerto `5432` y un dominio como `age-db-proyecto.inf.uct.cl`.
 
 Define `POSTGRES_USER`, `POSTGRES_PASSWORD` y `POSTGRES_DB` según la imagen y monta almacenamiento en su ruta de datos. No asumas que todas las imágenes de PostgreSQL usan la misma ruta o usuario.
 
 ~~~env
-DATABASE_URL=postgres://mi_usuario:CONTRASENA_DEL_PROYECTO@age-db-kuberoapp:5432/mi_grafo_db
+DATABASE_URL=postgres://mi_usuario:CONTRASENA_DEL_PROYECTO@age-db-kuberoapp:80/mi_grafo_db
 ~~~
+
+Si además necesitas que la conexión con la base vaya cifrada, sigue [PostgreSQL con TLS](extras/postgres-tls.md).
 
 ### ⚠️ Almacenamiento: las apps internas NO guardan datos por defecto
 
-Cuando despliegas una app en Kubero (incluida una app interna sin dominio) usando el formulario normal de **"Create App"**, el almacenamiento que se le asigna es **efímero** (`emptyDir` en términos de Kubernetes). Eso significa que si el pod se reinicia — por una actualización, un error, o simplemente porque el nodo lo reprograma — **todo lo que hayas guardado dentro del contenedor se pierde**.
+Una app nueva no tiene volúmenes: lo que guarde dentro del contenedor es **efímero**. Si el pod se reinicia — por una actualización, un error, o porque el nodo lo reprograma — **todo lo que hayas guardado dentro del contenedor se pierde**.
 
-Esto es distinto de los **Addons** (como el PostgreSQL de la primera sección de esta página), que sí incluyen un campo de **Storage Class** en su formulario y sí sobreviven a un reinicio.
+Esto es distinto de los **Addons** (como el PostgreSQL de la primera sección de esta página), que crean su almacenamiento automáticamente y sobreviven a un reinicio.
 
 | Tipo de recurso | ¿Tiene almacenamiento persistente? | Dónde se configura |
 |---|---|---|
-| Addon (PostgreSQL, MySQL, MongoDB, Redis, etc.) | ✅ Sí, por defecto | Campo **Storage Class** en el formulario del addon |
-| App normal (con o sin dominio, imagen custom) | ❌ No, por defecto | No existe ese campo en el formulario de apps |
+| Addon (PostgreSQL, MySQL, MongoDB, Redis, etc.) | ✅ Sí, por defecto | Campos de almacenamiento en el formulario del addon |
+| App normal (imagen custom) | ❌ No, por defecto | Sección **Volúmenes** del formulario de la app |
 
 **¿Cuándo importa esto?**
 
 - Si tu servicio interno es una base de datos de un tipo que **sí** está entre los addons de Kubero (Postgres, MySQL, MongoDB, etc.), usa el addon en vez de una app custom — ya trae persistencia resuelta.
-- Consulta [Volúmenes](extras/volumenes.md) si necesitas una imagen que **no** es uno de esos addons (como el ejemplo de Apache AGE de arriba) y sí necesita guardar datos entre reinicios.
+- Si usas una imagen que **no** es uno de esos addons (como el ejemplo de Apache AGE de arriba) y necesita guardar datos entre reinicios, agrégale un volumen en su ruta de datos (ver [Volúmenes](extras/volumenes.md)). Para una base de datos, usa el modo de acceso `ReadWriteOnce`.
+- Al borrar la app también se borran sus volúmenes y los datos.
 
 
 ### Cómo verificar que la conexión interna funciona
@@ -424,14 +431,14 @@ Esto es distinto de los **Addons** (como el PostgreSQL de la primera sección de
 Antes de conectar tu app real, puedes confirmar que el servicio interno responde. Entra a la consola web de tu app (o a una terminal con acceso al cluster) y prueba:
 
 ```bash
-# ¿El puerto responde? (reemplaza por el nombre y puerto de tu servicio)
-nc -zv mi-db-kuberoapp 5432
+# ¿El puerto responde? (el servicio interno de una app usa el puerto 80)
+nc -zv mi-db-kuberoapp 80
 
 # ¿El nombre resuelve correctamente?
 nslookup mi-db-kuberoapp
 ```
 
-Si `nc` responde `open`, el servicio está activo y accesible por nombre desde tu proyecto. Si da `refused` o se queda esperando, revisa que el puerto configurado en **Container Port** coincida con el puerto real que usa tu imagen.
+Si `nc` responde `open`, el servicio está activo y accesible por nombre desde tu proyecto. Si da `refused` o se queda esperando, revisa que el **Puerto del contenedor** coincida con el puerto real que usa tu imagen (por ejemplo `5432` para PostgreSQL).
 
 ## Configuración adicional
 
@@ -451,7 +458,9 @@ Estas son limitaciones de la configuración actual de Kubero en la UCT que es im
 | Limitación | Descripción |
 |---|---|
 | **No hay build interno** | Kubero en la UCT no construye imágenes internamente. Siempre debes usar la estrategia "Container Image" con imágenes ya construidas en GitHub Actions y subidas a ghcr.io |
-| **Dominio opcional para servicios internos** | Si no quieres que una app sea pública, deja el campo Domain vacío — no se creará ingress y el servicio solo estará disponible dentro del cluster. Esto es útil para bases de datos con imagen custom u otros servicios internos (ver [App interna sin exposición pública](#app-interna-sin-exposicion-publica-imagen-custom)) |
-| **Health checks en PostgreSQL** | Kubero activa health checks HTTP para todas las apps por defecto, lo que falla en servicios que no hablan HTTP (como PostgreSQL). Para una app interna con imagen de PostgreSQL, revisa la sección [Desactivar Health Checks](#desactivar-health-checks) |
+| **Dominio obligatorio** | Toda app necesita un dominio y Kubero le crea su ingress. Un servicio que no atiende HTTP (como PostgreSQL) no queda accesible por ese dominio: las otras apps lo usan por su servicio interno `[app]-kuberoapp` en el puerto `80` (ver [App interna sin exposición pública](#app-interna-sin-exposicion-publica-imagen-custom)) |
+| **Solo imágenes públicas** | Kubero no descarga imágenes privadas: la imagen en ghcr.io debe ser pública. No incluyas contraseñas, claves ni archivos `.env` dentro de la imagen; pásalos por las variables de entorno de la app |
+| **Health checks en PostgreSQL** | Las comprobaciones de estado de Kubero son HTTP y fallan en servicios que no hablan HTTP (como PostgreSQL). Vienen desactivadas: no las actives en esas apps (ver [Desactivar Health Checks](#desactivar-health-checks)) |
+| **Sin TLS en el addon PostgreSQL** | El addon no cifra la conexión con la base. Si tu proyecto lo necesita, ver [PostgreSQL con TLS](extras/postgres-tls.md) |
 | **Routing multi-servicio** | Si el frontend y el backend comparten el mismo dominio, el nginx del frontend debe estar configurado para hacer `proxy_pass` al servicio interno del backend. Esto debe hacerse en el `nginx.conf` de la imagen del frontend |
 | **Addons fijos** | Los addons predefinidos (PostgreSQL, Redis, etc.) usan imágenes estándar. Si necesitas una imagen custom (ej: Apache AGE, PostGIS), debes crear una **app interna sin dominio público** en vez de usar el addon — ver [App interna sin exposición pública](#app-interna-sin-exposicion-publica-imagen-custom) |

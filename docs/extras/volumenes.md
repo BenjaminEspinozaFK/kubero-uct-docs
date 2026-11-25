@@ -32,4 +32,6 @@ En **Crear app** o **Editar app**, abre **Volúmenes** (puede aparecer como **Vo
 
 Los valores iniciales de una fila son ejemplos; revisa especialmente clase, ruta y modo. Solo persisten los datos guardados en la ruta montada. La imagen debe admitir esa ruta y los permisos del usuario del contenedor.
 
-Un volumen no es un respaldo. Antes de eliminar una app, confirma cómo se conservan sus volúmenes y las políticas de retención de la instalación. Para bases de datos, utiliza la ruta de datos exigida por la imagen y revisa [Crear pipeline, apps, base de datos y variables](../despliegue.md).
+Un volumen no es un respaldo. **Al eliminar una app también se eliminan sus volúmenes y los datos**: respáldalos antes. Para bases de datos, utiliza la ruta de datos exigida por la imagen y revisa [Crear pipeline, apps, base de datos y variables](../despliegue.md).
+
+Una fila nueva propone el modo `ReadWriteMany`. Para una base de datos usa **`ReadWriteOnce`**: con `ReadWriteMany`, al redesplegar Kubero levanta el contenedor nuevo antes de apagar el anterior, y los dos escriben los mismos datos al mismo tiempo. El modo no se puede cambiar después de creado el volumen; si te equivocas, usa otro nombre para crear uno nuevo. Ver [PostgreSQL con TLS](postgres-tls.md) para un ejemplo completo.

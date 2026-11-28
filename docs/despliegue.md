@@ -11,6 +11,10 @@ Kubero descarga imágenes desde **GitHub Container Registry (ghcr.io)**. Para qu
 1. **Un `Dockerfile`** que describa cómo construir la imagen de tu app
 2. **Un workflow de GitHub Actions** que construya y suba la imagen a `ghcr.io` automáticamente
 
+::: danger Importante: necesitas un Dockerfile
+Tu repositorio debe incluir un **`Dockerfile`** que describa cómo construir la imagen de tu app. Sin él, el workflow de construcción de esta guía no podrá generar la imagen para desplegarla en Kubero.
+:::
+
 ### Agregar el workflow de GitHub Actions
 
 Crea el archivo `.github/workflows/docker-build.yml` en tu repositorio con este contenido:
@@ -335,6 +339,12 @@ Revisa pod, CPU y memoria cuando estén disponibles. **Métricas no disponibles*
 ![Pestaña actual de registros con vista Run y Addons](imagenes/app-registros-actual.png)
 
 Los registros ayudan a diagnosticar inicio, conexión y fallos de la aplicación. En la demo, el backend confirma `Conectado a la base de datos.` y `Servidor escuchando en el puerto 3000`; en tu proyecto, busca los mensajes equivalentes.
+
+### Acceder a la consola del pod
+
+Dentro de la aplicación, abre **Acciones → Abrir Consola** para acceder a la consola del pod. Desde allí puedes ejecutar comandos de tu aplicación, como migraciones de la base de datos o tareas de diagnóstico, siempre que las herramientas necesarias estén incluidas en la imagen.
+
+![Menú Acciones con la opción Abrir Consola enmarcada en rojo](imagenes/app-abrir-consola.png)
 
 ### Errores comunes y cómo resolverlos
 
